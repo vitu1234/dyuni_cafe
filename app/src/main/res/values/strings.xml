@@ -1,0 +1,92 @@
+<resources>
+    <string name="app_name">Dyuni Cafe</string>
+    <string name="logo_name">Dyuni Cafe</string>
+    <string name="slogan_name">Simply Wow</string>
+    <string name="powered_by">App Crafted By Jack</string>
+
+    <!--    Strings for on boarding-->
+    <!--    titles-->
+    <string name="first_slide_title">Online Food Ordering</string>
+    <string name="second_slide_title">Delicious &amp; the best </string>
+    <string name="third_slide_title">Sit Back and Relax</string>
+
+
+    <!--descriptions-->
+    <string name="first_slide_desc">Login, choose a meal of your choice and get the meal</string>
+    <string name="second_slide_desc">Need to try new delicious meals? Check our menu</string>
+    <string name="third_slide_desc">We care for our customers, order at any time and we will handle the rest</string>
+
+
+    <!--    buttons-->
+    <string name="skip_btn">Skip</string>
+    <string name="get_started_btn">Proceed</string>
+
+
+    <!--    DASHBOARD STRINGS-->
+    <string name="car_list">Meal List</string>
+    <string name="my_bookings">My Bookings</string>
+    <string name="most_rented">Most Rented</string>
+    <string name="favorites">Search Cars</string>
+    <string name="about_app">About app</string>
+    <string name="rate_us">Rate Us</string>
+
+    <!--    MENU STRINGS-->
+    <string name="menu_home">Home</string>
+    <string name="menu_favorites">Favorites</string>
+    <string name="menu_city">Choose City</string>
+    <string name="menu_profile">My Profile</string>
+    <string name="menu_order_history">Order History</string>
+    <string name="menu_terms">Terms &amp; Conditions</string>
+    <string name="menu_help">Leave message</string>
+    <string name="menu_doc_verify">Doc Verify</string>
+    <string name="menu_login">Login</string>
+    <string name="menu_logout">Logout</string>
+    <string name="title_activity_car_list">CarListActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rating_txt">Rating breakdown on a scale of 1 to 5</string>
+    <string name="make_order_text">Reserve</string>
+    <string name="profile_txt">Account</string>
+    <string name="apply_txt">apply</string>
+    <string name="with_driver_txt">With Driver</string>
+    <string name="car_category_txt">Car Category</string>
+    <string name="economy_txt">Economy</string>
+    <string name="luxury_txt">Luxury</string>
+    <string name="premium_txt">Premium</string>
+    <string name="compact_txt">Compact</string>
+    <string name="payment_txt">Payment</string>
+    <string name="addons_txt">Addons</string>
+    <string name="timing_txt">Timing</string>
+    <string name="charges_txt">Charges</string>
+    <string name="pick_up_fuel_txt">Pick-up Fuel</string>
+    <string name="rental_fare_txt">Rental Fare</string>
+    <string name="total_reserved_txt">Total Reserved</string>
+    <string name="pay_here_txt">Pay here</string>
+    <string name="call_txt">Call</string>
+    <string name="cancel_txt">Cancel</string>
+    <string name="location_txt">Location</string>
+    <string name="manual_txt">Manual</string>
+    <string name="automatic_txt">Automatic</string>
+    <string name="my_comments_txt">My Comments</string>
+    <string name="chat_with_us_txt">Chat with us</string>
+    <string name="report_bugs_txt"><![CDATA[Let us know about any bugs & feedback]]></string>
+    <string name="sample_customer_name">Jack Kamba</string>
+    <string name="change_phone_txt">Change Phone</string>
+    <string name="change_phone">Change Phone</string>
+    <string name="change_password_title">Change Password</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password_txt">New Password</string>
+    <string name="confirm_password_txt">Confirm Password</string>
+    <string name="change_password">Change Password</string>
+    <string name="dyuni_cafe_txt">DYUNI CAFE</string>
+
+
+</resources>

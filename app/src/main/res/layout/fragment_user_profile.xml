@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.UserProfileFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+
+        <RelativeLayout
+
+            android:id="@+id/relative2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+
+            <LinearLayout
+                android:id="@+id/linearBtns"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/profile_driver_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="30dp"
+                        android:fontFamily="@font/brandon_grotesque_black"
+                        android:text="@string/sample_customer_name"
+                        android:textColor="@color/black"
+                        android:textSize="26sp" />
+
+                    <TextView
+                        android:id="@+id/profile_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/profile_driver_name"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppins"
+                        android:text="0888299293"
+                        android:textSize="12sp"
+                        android:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/profile_driver_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/profile_phone"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppins"
+                        android:text="jackkamba@gmail.com"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/profile_balance_amount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/profile_driver_email"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/poppins"
+                        android:text="Account Balance: K20,0000"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/order_detail_line1"
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:layout_below="@+id/profile_balance_amount"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@color/lightWhite" />
+
+                    <TextView
+                        android:layout_marginBottom="10dp"
+                        android:id="@+id/change_phone_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/order_detail_line1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/brandon_grotesque_black"
+                        android:text="@string/change_phone_txt"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/phoneLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/change_phone_title"
+                        android:hint="@string/change_phone_txt"
+                        android:paddingLeft="16dp"
+                        android:paddingEnd="16dp"
+                        app:boxStrokeColor="#000"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:endIconMode="clear_text"
+                        app:startIconDrawable="@drawable/phone_icon"
+                        app:startIconTint="#000">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/new_phone"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_light"
+                            android:inputType="phone"
+                            android:textColor="#000"
+                            android:textSize="12sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frameChangePhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/phoneLayout"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="50dp"
+                        android:background="@color/home_gb_color">
+
+                        <Button
+                            android:id="@+id/changPhoneBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:background="#00000000"
+                            android:clickable="true"
+                            android:minHeight="40dp"
+                            android:paddingStart="15dp"
+                            android:paddingEnd="15dp"
+                            android:text="@string/change_phone"
+                            android:textColor="@color/white" />
+                    </FrameLayout>
+
+
+                    <TextView
+                        android:id="@+id/order_detail_line2"
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:layout_below="@+id/frameChangePhone"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/lightWhite" />
+
+
+                    <TextView
+                        android:id="@+id/change_pwd_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/order_detail_line2"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/brandon_grotesque_black"
+                        android:text="@string/change_password_title"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/passwordLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/change_pwd_title"
+                        android:layout_marginTop="20dp"
+                        android:hint="@string/current_password"
+                        android:paddingLeft="16dp"
+                        android:paddingEnd="16dp"
+                        app:boxStrokeColor="#000"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:endIconMode="password_toggle"
+                        app:startIconDrawable="@drawable/menu_login"
+                        app:startIconTint="#000">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/current_pwd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_light"
+                            android:inputType="textPassword"
+                            android:textColor="#000"
+                            android:textSize="12sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/passwordLayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/passwordLayout"
+                        android:layout_marginTop="20dp"
+                        android:hint="@string/new_password_txt"
+                        android:paddingLeft="16dp"
+                        android:paddingEnd="16dp"
+                        app:boxStrokeColor="#000"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:endIconMode="password_toggle"
+                        app:startIconDrawable="@drawable/menu_login"
+                        app:startIconTint="#000">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/new_pwd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_light"
+                            android:inputType="textPassword"
+                            android:textColor="#000"
+                            android:textSize="12sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/passwordLayout3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/passwordLayout2"
+                        android:layout_marginTop="20dp"
+                        android:hint="@string/confirm_password_txt"
+                        android:paddingLeft="16dp"
+                        android:paddingEnd="16dp"
+                        app:boxStrokeColor="#000"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:endIconMode="password_toggle"
+                        app:startIconDrawable="@drawable/menu_login"
+                        app:startIconTint="#000">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/con_pwd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_light"
+                            android:inputType="textPassword"
+                            android:textColor="#000"
+                            android:textSize="12sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frameChangePhone2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/passwordLayout3"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="50dp"
+                        android:background="@color/home_gb_color">
+
+                        <Button
+                            android:id="@+id/changPwdBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#00000000"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:minHeight="40dp"
+                            android:paddingStart="15dp"
+                            android:clickable="true"
+                            android:paddingEnd="15dp"
+                            android:text="@string/change_password"
+                            android:textColor="@color/white" />
+                    </FrameLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</ScrollView>

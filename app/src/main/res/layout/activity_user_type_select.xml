@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.common.UserTypeSelectActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="347dp"
+            android:layout_marginTop="30dp">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="315dp"
+                android:layout_height="191dp"
+                android:layout_centerHorizontal="true"
+                app:srcCompat="@drawable/daeyang_logo" />
+
+            <RelativeLayout
+                android:id="@+id/linea1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/imageView"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="50dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/titleDirect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/brandon_grotesque_black"
+                    android:text="Be Smart Choose Us"
+                    android:textAllCaps="true"
+                    android:textColor="#000"
+                    android:textSize="25sp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    />
+
+                <TextView
+                    android:paddingRight="16dp"
+                    android:paddingLeft="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/titleDirect"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity=""
+                    android:fontFamily="@font/poppins"
+                    android:textAlignment="center"
+                    android:text="@string/slogan_name"
+                    android:textSize="12sp"
+                    tools:ignore="RtlCompat" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+        <RelativeLayout
+
+            android:gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            >
+            <Button
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="LOGIN"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/lightWhite"
+                android:id="@+id/loginBtnDirect"
+                android:layout_toLeftOf="@+id/signUpBtnDirect"
+                android:layout_marginRight="100dp"
+                android:drawableRight="@drawable/menu_login"
+                android:drawableTint="@color/lightWhite"
+                android:transitionName="loginTransition"
+                android:onClick="openLoginActivity"
+
+                />
+            <Button
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:id="@+id/signUpBtnDirect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/lightWhite"
+                android:text="Sign Up"
+                android:drawableRight="@drawable/menu_profile_icon"
+                android:drawableTint="@color/lightWhite"
+                android:transitionName="signupTransition"
+                android:onClick="openSignupActivity"
+                />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>

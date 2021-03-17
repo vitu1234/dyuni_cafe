@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:transitionName="signupTransition"
+    tools:context=".activities.common.SignUpActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            >
+
+            <ImageView
+                android:id="@+id/backBtnSignup"
+                android:layout_width="30dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:onClick="goOptionScreen"
+                android:src="@drawable/arrow_back"
+                app:tint="#000" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/titleSignup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/brandon_grotesque_black"
+                android:text="CREATE ACCOUNT"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/countPosition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_weight="1"
+                android:text="1/3"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="24sp"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layoutSignUpContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:transitionName="signupTransition">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/fullnameSignup"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="Enter Fullname"
+                app:boxStrokeColor="#000"
+                app:boxStrokeWidthFocused="2dp"
+                app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/menu_profile_icon"
+                app:startIconTint="#000">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:inputType="text"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phoneSignup"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleSignup"
+                android:layout_marginTop="20dp"
+                android:hint="Enter Phone"
+                app:boxStrokeColor="#000"
+                app:boxStrokeWidthFocused="2dp"
+                app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/phone_icon"
+                app:startIconTint="#000">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:inputType="phone"
+                    android:maxLength="10"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/emailSignup"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/titleSignup"
+                android:layout_marginTop="20dp"
+                android:hint="Enter Email"
+                app:boxStrokeColor="#000"
+                app:boxStrokeWidthFocused="2dp"
+                app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/email_icon"
+                app:startIconTint="#000">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:inputType="textEmailAddress"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <RadioGroup
+                android:id="@+id/roleGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <RadioButton
+
+                    android:id="@+id/radioBtnStudent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="20dp"
+                    android:text="Student" />
+
+                <RadioButton
+                    android:id="@+id/radioBtnMember"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Visitor or Staff " />
+            </RadioGroup>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/pass1Signup"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:hint="Enter password"
+                app:boxStrokeColor="#000"
+                app:boxStrokeWidthFocused="2dp"
+                app:endIconMode="password_toggle"
+                app:startIconDrawable="@drawable/menu_login"
+                app:startIconTint="#000">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:inputType="textPassword"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/pass2Signup"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:hint="Re-enter password"
+                app:boxStrokeColor="#000"
+                app:boxStrokeWidthFocused="2dp"
+                app:endIconMode="password_toggle"
+                app:startIconDrawable="@drawable/menu_login"
+                app:startIconTint="#000">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins"
+                    android:inputType="textPassword"
+                    android:textColor="#000"
+                    android:textSize="12sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/nextSignupBtn1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorPrimary"
+            android:onClick="signUp"
+            android:text="Sign Up"
+            android:textColor="@color/lightWhite"
+            android:transitionName="signupTransition" />
+
+        <Button
+            android:id="@+id/toLoginsignUpBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="#00000000"
+            android:onClick="toLogin"
+            android:text="Login" />
+
+    </LinearLayout>
+
+
+</ScrollView>
