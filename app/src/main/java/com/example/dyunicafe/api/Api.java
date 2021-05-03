@@ -1,5 +1,7 @@
 package com.example.dyunicafe.api;
 
+import com.example.dyunicafe.models.GetMealsResponse;
+import com.example.dyunicafe.models.GetOrdersResponse;
 import com.example.dyunicafe.models.LoginResponse;
 
 import okhttp3.MultipartBody;
@@ -56,6 +58,15 @@ public interface Api {
 
 
     //GET METHODS
+    @GET("get_menu_items")
+    Call<GetMealsResponse>getMealsResponse(
+    );
 
+    @GET("get_dash_menu_items")
+    Call<GetMealsResponse>getMealsDashResponse(
+    );
+    @GET("dashboard_orders")
+    Call<GetOrdersResponse>getMostOrderMeals(
+    );
 
 }

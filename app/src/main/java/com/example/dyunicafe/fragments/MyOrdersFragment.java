@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 
 import com.example.dyunicafe.R;
 import com.example.dyunicafe.adapters.GeneralRecyclerAdapter;
-import com.example.dyunicafe.adapters.RecentlyViewedAdapter;
 import com.example.dyunicafe.models.RecentlyViewed;
 
 import java.util.ArrayList;
@@ -62,7 +61,7 @@ public class MyOrdersFragment extends Fragment {
     private void setMyOrdersRecycler(List<RecentlyViewed> myOrdersDataList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerViewOrders.setLayoutManager(layoutManager);
-        generalRecyclerAdapter = new GeneralRecyclerAdapter(getContext(), myOrdersDataList);
-        recyclerViewOrders.setAdapter(generalRecyclerAdapter);
+//        generalRecyclerAdapter = new GeneralRecyclerAdapter(getContext(), myOrdersDataList);
+//        recyclerViewOrders.setAdapter(generalRecyclerAdapter);
     }
 }

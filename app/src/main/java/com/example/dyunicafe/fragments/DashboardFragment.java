@@ -2,6 +2,12 @@ package com.example.dyunicafe.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,37 +15,48 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.example.dyunicafe.R;
-import com.example.dyunicafe.activities.AllCategory;
-import com.example.dyunicafe.adapters.CategoryAdapter;
-import com.example.dyunicafe.adapters.DiscountedProductAdapter;
-import com.example.dyunicafe.adapters.RecentlyViewedAdapter;
-import com.example.dyunicafe.models.Category;
+import com.example.dyunicafe.activities.SearchActivity;
+import com.example.dyunicafe.adapters.MostOrderedMealsAdapter;
+import com.example.dyunicafe.adapters.MealsDashAdapter;
+import com.example.dyunicafe.api.RetrofitClient;
 import com.example.dyunicafe.models.DiscountedProducts;
-import com.example.dyunicafe.models.RecentlyViewed;
+import com.example.dyunicafe.models.GetMealsResponse;
+import com.example.dyunicafe.models.GetOrdersResponse;
+import com.example.dyunicafe.models.room_db.AppDatabase;
+import com.example.dyunicafe.models.room_db.Meal;
+import com.example.dyunicafe.models.room_db.Order;
+import com.example.dyunicafe.utils.CheckInternet;
+import com.example.dyunicafe.utils.MyProgressDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class DashboardFragment extends Fragment {
 
+    Call<GetMealsResponse> call;
+    Call<GetOrdersResponse> ordersCall;
 
-    RecyclerView discountRecyclerView, categoryRecyclerView, recentlyViewedRecycler;
-    DiscountedProductAdapter discountedProductAdapter;
+    CheckInternet checkInternet;
+    MyProgressDialog progressDialog;
+    AppDatabase room_db;
+
+    List<Meal> mealList;
+    List<Order> orderList;
+
+    RecyclerView discountRecyclerView, recentlyViewedRecycler;
+    MostOrderedMealsAdapter mostOrderedMealsAdapter;
     List<DiscountedProducts> discountedProductsList;
 
-    CategoryAdapter categoryAdapter;
-    List<Category> categoryList;
 
-    RecentlyViewedAdapter recentlyViewedAdapter;
-    List<RecentlyViewed> recentlyViewedList;
+    MealsDashAdapter mealsDashAdapter;
+    TextView  textViewmoreMeals;
 
-    TextView allCategory;
+    EditText editTextSearch;
 
 
     public DashboardFragment() {
@@ -58,66 +75,166 @@ public class DashboardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        checkInternet = new CheckInternet(getContext());
+        progressDialog = new MyProgressDialog(getContext());
+        room_db = AppDatabase.getDbInstance(getContext());
+
         discountRecyclerView = view.findViewById(R.id.discountedRecycler);
-        categoryRecyclerView = view.findViewById(R.id.categoryRecycler);
-        allCategory = view.findViewById(R.id.allCategoryImage);
-        recentlyViewedRecycler = view.findViewById(R.id.recently_item);
 
-
-        allCategory.setOnClickListener(new View.OnClickListener() {
+        editTextSearch = view.findViewById(R.id.editText);
+        editTextSearch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getContext(), AllCategory.class);
-                startActivity(i);
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), SearchActivity.class));
+            }
+        });
+        recentlyViewedRecycler = view.findViewById(R.id.recently_item);
+        textViewmoreMeals = view.findViewById(R.id.moreMeals);
+        textViewmoreMeals.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayFragment(new MealsListFragment());
             }
         });
 
+//        allCategory.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent i = new Intent(getContext(), AllCategory.class);
+//                startActivity(i);
+//            }
+//        });
+
         // adding data to model
         discountedProductsList = new ArrayList<>();
-        discountedProductsList.add(new DiscountedProducts(1, "Sausage", "K1,200" , R.drawable.sausage));
+        discountedProductsList.add(new DiscountedProducts(1, "Sausage", "K1,200", R.drawable.sausage));
         discountedProductsList.add(new DiscountedProducts(2, "Chips & Chicken", "K800", R.drawable.chips_chicken));
 //        discountedProductsList.add(new DiscountedProducts(3, "Bread Sandwich Omelette", "K500",R.drawable.egg_cheese_bread_omelette));
-        discountedProductsList.add(new DiscountedProducts(4, "Fried Beef","K1,200", R.drawable.fried_beef));
+        discountedProductsList.add(new DiscountedProducts(4, "Fried Beef", "K1,200", R.drawable.fried_beef));
         discountedProductsList.add(new DiscountedProducts(4, "Nsima & Beans", "K500", R.drawable.nsima_beans_rape));
 
-        // adding data to model
-        categoryList = new ArrayList<>();
-        categoryList.add(new Category(1, R.drawable.ic_home_fruits));
-
-
-        // adding data to model
-        recentlyViewedList = new ArrayList<>();
-        recentlyViewedList.add(new RecentlyViewed("Chips & Chicken",  "K800", "Lunch", R.drawable.chips_chicken));
-        recentlyViewedList.add(new RecentlyViewed("Rice & Beef",  "K700", "Supper", R.drawable.beef_rice));
-        recentlyViewedList.add(new RecentlyViewed("Spaghetti & Mince Meat",  "K800", "Lunch", R.drawable.spaghetti));
-        recentlyViewedList.add(new RecentlyViewed("Chips & Quarter Chicken", "K1,200", "Supper", R.drawable.chicken_image));
-
-        setDiscountedRecycler(discountedProductsList);
-        setCategoryRecycler(categoryList);
-        setRecentlyViewedRecycler(recentlyViewedList);
+        getMostOrder();
+        getMeals();
     }
 
-    private void setDiscountedRecycler(List<DiscountedProducts> dataList) {
+    private void displayFragment(Fragment fragment) {
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, null).commit();
+    }
+    private void setMostOrderdRecycler(List<Order> dataList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         discountRecyclerView.setLayoutManager(layoutManager);
-        discountedProductAdapter = new DiscountedProductAdapter(getContext(), dataList);
-        discountRecyclerView.setAdapter(discountedProductAdapter);
+        mostOrderedMealsAdapter = new MostOrderedMealsAdapter(getContext(), dataList);
+        discountRecyclerView.setAdapter(mostOrderedMealsAdapter);
     }
 
 
-    private void setCategoryRecycler(List<Category> categoryDataList) {
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        categoryRecyclerView.setLayoutManager(layoutManager);
-        categoryAdapter = new CategoryAdapter(getContext(), categoryDataList);
-        categoryRecyclerView.setAdapter(categoryAdapter);
-    }
-
-    private void setRecentlyViewedRecycler(List<RecentlyViewed> recentlyViewedDataList) {
+    private void setDashboardMeals(List<Meal> recentlyViewedDataList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         recentlyViewedRecycler.setLayoutManager(layoutManager);
-        recentlyViewedAdapter = new RecentlyViewedAdapter(getContext(), recentlyViewedDataList);
-        recentlyViewedRecycler.setAdapter(recentlyViewedAdapter);
+        mealsDashAdapter = new MealsDashAdapter(getContext(), recentlyViewedDataList);
+        recentlyViewedRecycler.setAdapter(mealsDashAdapter);
     }
-    //Now again we need to create a adapter and model class for recently viewed items.
-    // lets do it fast.
+
+    //get meals
+    private void getMeals() {
+        //check Internet
+        if (checkInternet.isInternetConnected(getContext())) {
+//            progressDialog.showDialog("Please wait");
+
+            call = RetrofitClient.getInstance().getApi().getMealsDashResponse();
+            call.enqueue(new Callback<GetMealsResponse>() {
+                @Override
+                public void onResponse(Call<GetMealsResponse> call, Response<GetMealsResponse> response) {
+                    progressDialog.closeDialog();
+                    GetMealsResponse response1 = response.body();
+                    if (!response1.isError()) {
+//                        progressDialog.showSuccessAlert(response1.getMessage());
+                        room_db = AppDatabase.getDbInstance(getContext());
+                        mealList = response1.getMeals();
+
+                        for (int i = 0; i < mealList.size(); i++) {
+//                            Log.e("meals", String.valueOf(mealList.get(i)));
+                            room_db.mealDao().insertMeal(mealList.get(i));
+                            Log.e("price", mealList.get(i).getPrice());
+
+                        }
+                        setDashboardMeals(mealList);
+                        Log.e("size", String.valueOf(room_db.mealDao().getAllMeals().size()));
+
+
+//                        db.userDao().insertUser(user);
+                    } else {
+                        progressDialog.showDangerAlert(response1.getMessage());
+
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GetMealsResponse> call, Throwable t) {
+                    progressDialog.closeDialog();
+                    try {
+                        progressDialog.showDangerAlert("An error occured, try again later;;");
+                        Log.e("error", t.getMessage());
+                    } catch (Exception e) {
+
+                    }
+                }
+            });
+        } else {
+            progressDialog.showDangerAlert("Internet connection not available");
+        }
+    }
+
+    //get most ordered meals
+    private void getMostOrder() {
+        //check Internet
+        if (checkInternet.isInternetConnected(getContext())) {
+//            progressDialog.showDialog("Please wait");
+
+            ordersCall = RetrofitClient.getInstance().getApi().getMostOrderMeals();
+            ordersCall.enqueue(new Callback<GetOrdersResponse>() {
+                @Override
+                public void onResponse(Call<GetOrdersResponse> call, Response<GetOrdersResponse> response) {
+//                    progressDialog.closeDialog();
+                    GetOrdersResponse response1 = response.body();
+                    if (!response1.isError()) {
+//                        progressDialog.showSuccessAlert(response1.getMessage());
+                        room_db = AppDatabase.getDbInstance(getContext());
+                        orderList = response1.getOrders();
+
+                        for (int i = 0; i < orderList.size(); i++) {
+//                            Log.e("meals", String.valueOf(mealList.get(i)));
+                            room_db.orderDao().insertOrder((orderList.get(i)));
+//                            Log.e("price", mealList.get(i).getPrice());
+
+                        }
+                        setMostOrderdRecycler(orderList);
+                        Log.e("size", String.valueOf(room_db.mealDao().getAllMeals().size()));
+
+
+//                        db.userDao().insertUser(user);
+                    } else {
+//                        progressDialog.showDangerAlert(response1.getMessage());
+
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GetOrdersResponse> call, Throwable t) {
+//                    progressDialog.closeDialog();
+                    try {
+//                        progressDialog.showDangerAlert("An error occured, try again later;;");
+                        Log.e("error", t.getMessage());
+                    } catch (Exception e) {
+
+                    }
+                }
+            });
+        } else {
+//            progressDialog.showDangerAlert("Internet connection not available");
+        }
+    }
+
 }

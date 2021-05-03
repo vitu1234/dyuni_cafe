@@ -80,11 +80,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
             <TextView
-
+                android:padding="16dp"
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:fontFamily="@font/poppins"
                 android:lineSpacingExtra="4dp"
                 android:text="Order &amp; Buy your Meal through our App to Avoid long queues &amp; waiting time in the Cafeteria."
@@ -94,12 +93,14 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:transitionName="searchTransition"
+                android:gravity="center_vertical"
                 android:textColor="@color/black"
                 android:id="@+id/editText"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/search_bg"
                 android:drawableLeft="@drawable/ic_search_black_24dp"
@@ -119,7 +120,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="150dp"
+                android:layout_marginTop="160dp"
                 android:fontFamily="@font/brandon_grotesque_light"
                 android:text="Top Ordered"
                 android:textColor="@android:color/background_dark"

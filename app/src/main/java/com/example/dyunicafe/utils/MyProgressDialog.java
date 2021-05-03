@@ -40,4 +40,20 @@ public class MyProgressDialog {
         }
     }
 
+    public void showDangerAlert(String msg){
+        pDialog = new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#FF3D00"));
+        pDialog.setTitleText(msg);
+        pDialog.setCancelable(true);
+        pDialog.show();
+    }
+
+    public void showSuccessAlert(String msg){
+        pDialog = new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#FC00D16B"));
+        pDialog.setTitleText(msg);
+        pDialog.setCancelable(true);
+        pDialog.show();
+    }
+
 }

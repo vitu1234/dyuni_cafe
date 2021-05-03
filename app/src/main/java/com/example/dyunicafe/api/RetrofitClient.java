@@ -3,8 +3,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    public static final String BASE_URL = "http://192.168.8.102/jack/android/public/";
-    public static final String BASE_URL2 = "http://192.168.8.102/jack/android/";//for getting images
+    public static final String BASE_URL = "http://192.168.8.102/dyuni_cafe/android/public/";
+    public static final String BASE_URL2 = "http://192.168.8.102/dyuni_cafe/";//for getting images
     public static RetrofitClient minstance;
     public Retrofit retrofit;
 

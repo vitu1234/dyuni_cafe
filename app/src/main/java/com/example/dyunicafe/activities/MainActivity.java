@@ -4,12 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,25 +16,14 @@ import android.widget.TextView;
 
 import com.example.dyunicafe.R;
 import com.example.dyunicafe.activities.common.UserTypeSelectActivity;
-import com.example.dyunicafe.adapters.CategoryAdapter;
-import com.example.dyunicafe.adapters.DiscountedProductAdapter;
-import com.example.dyunicafe.adapters.RecentlyViewedAdapter;
 import com.example.dyunicafe.fragments.AboutAppFragment;
 import com.example.dyunicafe.fragments.DashboardFragment;
 import com.example.dyunicafe.fragments.MealsListFragment;
 import com.example.dyunicafe.fragments.MyOrdersFragment;
 import com.example.dyunicafe.fragments.NeedHelpFragment;
 import com.example.dyunicafe.fragments.UserProfileFragment;
-import com.example.dyunicafe.models.Category;
-import com.example.dyunicafe.models.DiscountedProducts;
-import com.example.dyunicafe.models.RecentlyViewed;
 import com.example.dyunicafe.storage.SharedPrefManager;
 import com.google.android.material.navigation.NavigationView;
-
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
 
 
 public class
@@ -208,7 +193,7 @@ MainActivity extends AppCompatActivity implements NavigationView.OnNavigationIte
     private void logout() {
         //get stored data
         SharedPrefManager sharedPrefManager = new SharedPrefManager(getApplicationContext());
-
+        sharedPrefManager.logoutUser();
         //closee all existing activities to avoid showing them once user is logged in
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

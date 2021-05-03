@@ -15,16 +15,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dyunicafe.R;
 import com.example.dyunicafe.activities.ProductDetails;
+import com.example.dyunicafe.api.RetrofitClient;
 import com.example.dyunicafe.models.RecentlyViewed;
+import com.example.dyunicafe.models.room_db.Meal;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class GeneralRecyclerAdapter extends RecyclerView.Adapter<GeneralRecyclerAdapter.MyViewHolder> {
 
     Context context;
-    List<RecentlyViewed> recentlyViewedList;
+    List<Meal> recentlyViewedList;
 
-    public GeneralRecyclerAdapter(Context context, List<RecentlyViewed> recentlyViewedList) {
+    public GeneralRecyclerAdapter(Context context, List<Meal> recentlyViewedList) {
         this.context = context;
         this.recentlyViewedList = recentlyViewedList;
     }
@@ -42,20 +45,31 @@ public class GeneralRecyclerAdapter extends RecyclerView.Adapter<GeneralRecycler
 //        Log.e("try12", recentlyViewedList.get(position).getName());
 
 
-        holder.name.setText(recentlyViewedList.get(position).getName());
-        holder.description.setText(recentlyViewedList.get(position).getDescription());
-        holder.price.setText(recentlyViewedList.get(position).getPrice());
-        holder.imageView.setImageResource(recentlyViewedList.get(position).getBigimageurl());
+        holder.name.setText(recentlyViewedList.get(position).getMeal_name());
+        holder.description.setText(recentlyViewedList.get(position).getMeal_type());
+        holder.price.setText("K " +recentlyViewedList.get(position).getPrice());
+
+        //setpicture
+        String image = recentlyViewedList.get(position).getImg_url();
+        String imageUri = RetrofitClient.BASE_URL2 + "images/" + image;
+
+        Picasso.get().load(imageUri)
+                .placeholder(R.drawable.daeyang_logo)
+                .error(R.drawable.daeyang_logo)
+                .into(holder.imageView);
+
+
+//        holder.imageView.setImageResource(recentlyViewedList.get(position).getBigimageurl());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 Intent i = new Intent(context, ProductDetails.class);
-                i.putExtra("name", recentlyViewedList.get(position).getName());
-                i.putExtra("image", recentlyViewedList.get(position).getBigimageurl());
+                i.putExtra("name", recentlyViewedList.get(position).getMeal_name());
+                i.putExtra("image", recentlyViewedList.get(position).getImg_url());
                 i.putExtra("price", recentlyViewedList.get(position).getPrice());
-                i.putExtra("desc", recentlyViewedList.get(position).getDescription());
+                i.putExtra("desc", recentlyViewedList.get(position).getMeal_type());
                 context.startActivity(i);
 
             }

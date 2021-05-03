@@ -9,14 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.dyunicafe.R;
+import com.example.dyunicafe.api.RetrofitClient;
+import com.squareup.picasso.Picasso;
 
 public class ProductDetails extends AppCompatActivity {
 
     ImageView img, back;
     TextView proName, proPrice, proDesc, proQty, proUnit;
 
-    String name, price, desc, qty, unit;
-    int image;
+    String name, price, desc, qty, unit, image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class ProductDetails extends AppCompatActivity {
         Intent i = getIntent();
 
          name = i.getStringExtra("name");
-         image = i.getIntExtra("image", R.drawable.b1);
+         image = i.getStringExtra("image");
          price = i.getStringExtra("price");
          desc = i.getStringExtra("desc");
 //         qty = i.getStringExtra("qty");
@@ -41,13 +42,19 @@ public class ProductDetails extends AppCompatActivity {
          proUnit = findViewById(R.id.unit);
 
          proName.setText(name);
-         proPrice.setText(price);
+         proPrice.setText("K "+price);
          proDesc.setText(desc);
          proQty.setText(qty);
          proUnit.setText(unit);
 
 
-        img.setImageResource(image);
+//        img.setImageResource(image);
+        String imageUri = RetrofitClient.BASE_URL2 + "images/" + image;
+
+        Picasso.get().load(imageUri)
+                .placeholder(R.drawable.daeyang_logo)
+                .error(R.drawable.daeyang_logo)
+                .into(img);
 
 
         back.setOnClickListener(new View.OnClickListener() {
