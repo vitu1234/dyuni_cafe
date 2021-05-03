@@ -478,7 +478,79 @@ $("#deleteMenuForm").on('submit',function(e){
     e.stopImmediatePropagation();
 });
 
+//edit meal
+function editMeal(id){
+    $("#editMealForm"+id).on('submit',function(e){
+   var form_data = $(this).serialize();
+    
+    var title = $("#etitle"+id).val();
+    var eUid = id;
+   
+    if(title !== '' && eUid !== '' ){
+      
+      $("#editUserBtn"+id).html('<span class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></span> Saving...');
+                $.ajax({ //make ajax request to cart_process.php
+              url: "process/meals.php",
+                  type: "POST",
+                  //dataType:"json", //expect json value from server
+                  data: form_data
+              }).done(function(dataResult){ //on Ajax success
+                    
+                    console.log(dataResult)
+                $("#editUserBtn"+id).html('Update ');
+                var data = JSON.parse(dataResult);
+             
+                document.getElementById("editMealForm"+id).reset();//empty the form
+                $("#view-user"+id).modal('toggle');
+             
+                if(data.code == 1){
+                  swal({
+                    title: data.msg,
+                    icon: "success",
+                  });
 
+                  
+                   setTimeout(function(){
+                     window.location = "meals.php";
+                   },800);
+                  
+                }else if(data.code == 2){
+                    swal({
+                      title: data.msg,
+                      icon: "error",
+                    });
+                }else{
+                   swal({
+                      title: "An error occured, try again later!",
+                      icon: "error",
+                    });
+                  
+                  document.getElementById("editMealForm"+id).reset();//empty the form
+                $("#view-user"+id).modal('toggle');
+                }
+                 
+             
+           });
+     
+    }else{
+     
+      swal({
+            title: "All fields are required!",
+            icon: "error",
+          });
+      
+      document.getElementById("editMealForm"+id).reset();//empty the form
+      $("#view-user"+id).modal('toggle');
+      
+    }
+      
+             
+    
+    e.preventDefault();
+    e.stopImmediatePropagation();
+});
+
+}
 
 
 
@@ -823,131 +895,7 @@ $("#deleteNewsForm").on('submit',function(e){
     e.stopImmediatePropagation();
 });
   
-//edit news
-function editNews(id){
-    $("#editNewsForm"+id).on('submit',function(e){
-   var form_data = $(this).serialize();
-    
-    var title = $("#etitle"+id).val();
-    var eUid = id;
-   
-    if(title !== '' && eUid !== '' ){
-      
-      $("#editUserBtn"+id).html('<span class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></span> Saving...');
-                $.ajax({ //make ajax request to cart_process.php
-              url: "process/meals.php",
-                  type: "POST",
-                  //dataType:"json", //expect json value from server
-                  data: form_data
-              }).done(function(dataResult){ //on Ajax success
-                    
-                    console.log(dataResult)
-                $("#editUserBtn"+id).html('Update ');
-                var data = JSON.parse(dataResult);
-             
-                document.getElementById("editNewsForm"+id).reset();//empty the form
-                $("#view-user"+id).modal('toggle');
-             
-                if(data.code == 1){
-                  swal({
-                    title: "Fill all fields",
-                    icon: "error",
-                  });
 
-                  $.notify(content,{
-                      type: state,
-                      placement: {
-                          from: placementFrom,
-                          align: placementAlign
-                      },
-                      time: 800,
-                  });
-                   setTimeout(function(){
-                     window.location = "news";
-                   },800);
-                  
-                }else if(data.code == 2){
-                    var state = "danger";
-                    content.message = data.msg;
-                    content.title = 'Update News Article';
-                    if (style == "withicon") {
-                        content.icon = 'la la-bell';
-                    } else {
-                        content.icon = 'none';
-                    }
-                    content.url = 'news.php';
-                    content.target = '_blank';
-
-                    $.notify(content,{
-                        type: state,
-                        placement: {
-                            from: placementFrom,
-                            align: placementAlign
-                        },
-                        time: 800,
-                    });
-                }else{
-                  var state = "danger";
-                  content.message = "An unknown error occured, try again later!";
-                  content.title = 'Update News Article';
-                  if (style == "withicon") {
-                      content.icon = 'la la-bell';
-                  } else {
-                      content.icon = 'none';
-                  }
-                  content.url = 'news.php';
-                  content.target = '_blank';
-
-                  $.notify(content,{
-                      type: state,
-                      placement: {
-                          from: placementFrom,
-                          align: placementAlign
-                      },
-                      time: 800,
-                  });
-                  
-                  document.getElementById("editNewsForm"+id).reset();//empty the form
-                $("#view-user"+id).modal('toggle');
-                }
-                 
-             
-           });
-     
-    }else{
-     
-      var state = "danger";
-      content.message = "All Fields are required!";
-      content.title = 'Update News Article';
-      if (style == "withicon") {
-          content.icon = 'la la-bell';
-      } else {
-          content.icon = 'none';
-      }
-      content.url = 'news.php';
-      content.target = '_blank';
-
-      $.notify(content,{
-          type: state,
-          placement: {
-              from: placementFrom,
-              align: placementAlign
-          },
-          time: 800,
-      });
-      
-      document.getElementById("editNewsForm"+id).reset();//empty the form
-      $("#view-user"+id).modal('toggle');
-      
-    }
-      
-             
-    
-    e.preventDefault();
-    e.stopImmediatePropagation();
-});
-
-}
 
 //edit research
 function editResearch(id){

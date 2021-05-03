@@ -252,7 +252,7 @@ $getUser = $operation->retrieveSingle("SELECT *FROM users WHERE user_id = '$user
                                                   
                                                   
                                                   if($row['img_url'] != ''){
-                                                      $img = '<img height=80px" src="../images/news/'.$row['img_url'].'"/>';
+                                                      $img = '<img height=80px" src="images/'.$row['img_url'].'"/>';
                                                   }else{
                                                       $img = '<img height="50px" src="assets/img/users/no_profile.jpeg"/>';
                                                   }
@@ -269,68 +269,17 @@ $getUser = $operation->retrieveSingle("SELECT *FROM users WHERE user_id = '$user
                                                               </a>
                                                           </div>
                                                           
-                                                           <div class="form-button-action">
-                                  <a onclick="setUpdateMeal(\''.$row['meal_id'].'\')" href="#view-meal'.$row['meal_id'].'" data-toggle="modal"  role="button" id="addAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button" data-toggle="tooltip" title="Change Picture" class="btn btn-link btn-simple-primary">
-                                                                  <i class="fas fa-photo"></i>
+                                                  <div class="form-button-action">
+                                                     <a  href="#view-meal'.$row['meal_id'].'" data-toggle="modal"  role="button" id="addAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button" data-toggle="tooltip" title="Change Picture" class="btn btn-link btn-simple-primary">
+                                                  <i class="fas fa-image"></i>
                                                               </a>
-                                </div>
-                                                            <div class="form-button-action">
-                                  <a onclick="setUpdateAttachment(\''.$row['meal_id'].'\')" href="#view-attachment" data-toggle="modal"  role="button" id="addAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" type="button" data-toggle="tooltip" title="Add/Change Attachment" class="btn btn-link btn-simple-primary">
-                                                                  <i class="fas fa-book"></i>
-                                                              </a>
-                                </div>
+                                                </div>
+                            
 
                                                       </td>
                                                   </tr>
-                                           
-                                               <div id="view-user'.$row['meal_id'].'" class="modal fade " role="dialog" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg" role="document">
-                                                  <div class="modal-content">
-                                                    <div class="modal-header">
-                                                      <h5 class="modal-title font-weight-400">VIEW MEAL</h5>
-                                                      <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
-                                                    </div>
 
-                                                    <div class="modal-body p-4">
-
-
-                                                      <div class="row">
-                                                          <div class="col-12">
-
-                                                              '.$img.'
-                                                          </div>
-                                                      </div>
-                                                    <div id="adminResponse" style="width:100%;"></div>
-
-                                                      <form id="editNewsForm'.$row['meal_id'].'" method="post">
-                                                        <div class="row">
-                                                          <div class="col-12 ">
-                                                            <div class="form-group">
-                                                              <label for="firstName">Meal Name</label>
-                                                              <input type="text" class="form-control" data-bv-field="firstName" id="etitle'.$row['meal_id'].'" name="etitle" required placeholder="Meal Name" value="'.$row['meal_name'].'" />
-                                                            </div>
-                                                            
-                                                          </div>
-                                                         
-                                                         
-                                                         <input type="hidden" id="e_news_id'.$row['meal_id'].'" name="e_news_id" value="'.$row['meal_id'].'"/>
-                                                         
-                                                  
-                                                         
-                                                          <div class="col-12 col-sm-6">
-                                                                  <button onclick="editNews(\''.$row['meal_id'].'\')"  id="editUserBtn'.$row['meal_id'].'" class="btn btn-warning btn-block mt-2 " type="submit">Update </button>
-                                                          </div>
-                                                           
-                                                          '.$btn_del.'
-                                                        </div>
-                                                        
-                                                      </form>
-                                                    </div>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                              </div>
-                                                <div id="view-meal'.$row['meal_id'].'" class="modal fade " role="dialog" aria-hidden="true">
+                                                  <div id="view-meal'.$row['meal_id'].'" class="modal fade " role="dialog" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">
                                                   <div class="modal-content">
                                                     <div class="modal-header">
@@ -383,6 +332,64 @@ $getUser = $operation->retrieveSingle("SELECT *FROM users WHERE user_id = '$user
                                                   </div>
                                                 </div>
                                               </div>
+
+
+                                           
+                                               <div id="view-user'.$row['meal_id'].'" class="modal fade " role="dialog" aria-hidden="true">
+                                                <div class="modal-dialog modal-lg" role="document">
+                                                  <div class="modal-content">
+                                                    <div class="modal-header">
+                                                      <h5 class="modal-title font-weight-400">VIEW MEAL</h5>
+                                                      <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+                                                    </div>
+
+                                                    <div class="modal-body p-4">
+
+
+                                                      <div class="row">
+                                                          <div class="col-12">
+
+                                                              '.$img.'
+                                                          </div>
+                                                      </div>
+                                                    <div id="adminResponse" style="width:100%;"></div>
+
+                                                      <form id="editMealForm'.$row['meal_id'].'" method="post">
+                                                        <div class="row">
+                                                          <div class="col-12 col-md-6">
+                                                            <div class="form-group">
+                                                              <label for="firstName">Meal Name</label>
+                                                              <input type="text" class="form-control" data-bv-field="firstName" id="etitle'.$row['meal_id'].'" name="etitle" required placeholder="Meal Name" value="'.$row['meal_name'].'" />
+                                                            </div>
+                                                            </div>
+
+                                                            <div class="col-12 col-md-6">
+                                                            <div class="form-group">
+                                                              <label for="firstName">Meal Price (MWK)</label>
+                                                              <input type="text" class="form-control" data-bv-field="firstName" id="eprice'.$row['meal_id'].'" name="eprice" required placeholder="Meal Price" value="'.$row['meal_price'].'" />
+                                                            </div>
+
+                                                            
+                                                          </div>
+                                                         
+                                                         
+                                                         <input type="hidden" id="e_news_id'.$row['meal_id'].'" name="e_news_id" value="'.$row['meal_id'].'"/>
+                                                         
+                                                    
+                                                         
+                                                          <div class="col-12 col-sm-6">
+                                                                  <button onclick="editMeal(\''.$row['meal_id'].'\')"  id="editUserBtn'.$row['meal_id'].'" class="btn btn-warning btn-block mt-2 " type="submit">Update </button>
+                                                           </div>
+                                                          '.$btn_del.'
+                                                    </div>
+                                                        
+                                                      </form>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              
+                                                
                                                  
                                                   
                                                   ';
@@ -421,10 +428,17 @@ $getUser = $operation->retrieveSingle("SELECT *FROM users WHERE user_id = '$user
             
             <form id="addNewsForm" method="post">
               <div class="row">
-                <div class="col-12 ">
+                <div class="col-12 col-md-6">
                   <div class="form-group">
                     <label for="firstName">Meal Name</label>
                     <input type="text" class="form-control" data-bv-field="firstName" id="meal_name" name="meal_name" maxlength="150" required placeholder="Meal Name" />
+                  </div>
+
+                </div>
+                 <div class="col-12 col-md-6">
+                  <div class="form-group">
+                    <label for="firstName">Meal Price</label>
+                    <input onkeypress="return isNumberKey(event)" type="text" class="form-control" data-bv-field="firstName" id="meal_price" name="meal_price" maxlength="5" required placeholder="Meal Price" />
                   </div>
 
                 </div>
@@ -480,7 +494,7 @@ $getUser = $operation->retrieveSingle("SELECT *FROM users WHERE user_id = '$user
       </div>
     </div>
     
-  <div id="view-attachment" class="modal fade " role="dialog" aria-hidden="true">
+<!--   <div id="view-attachment" class="modal fade " role="dialog" aria-hidden="true">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -513,19 +527,19 @@ $getUser = $operation->retrieveSingle("SELECT *FROM users WHERE user_id = '$user
       </div>
     </div>
   
-
+ -->
   <div id="deleteUserModal" class="modal fade " role="dialog" aria-hidden="true">
       <div class="modal-dialog " role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title font-weight-400" id="title">DELETE NEWS ARTICLE</h5>
+            <h5 class="modal-title font-weight-400" id="title">DELETE MEAL</h5>
             <button type="button" class="close font-weight-400" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
           </div>
           <div class="modal-body p-4">
             
             <form id="deleteNewsForm" method="post">
               <input type="hidden" id="delUser" name="delUser"/>
-              <p id="msg">Are you sure you want to delete this news article?</p>
+              <p id="msg">Are you sure you want to delete this meal?</p>
                 <div class="row">
                   
                   <div class="col-6 col-sm-3">
@@ -665,6 +679,7 @@ function setUpdateAttachment(id){
     $("#deleteUserModal").modal('toggle');
   }
   function setUpdateMeal(id){
+    $("#view-meal"+id).modal('toggle');
     var image_crop = $('#image_demo'+id).croppie({
     enableExif: true,
     viewport: {
@@ -708,7 +723,7 @@ function setUpdateAttachment(id){
       //get meal name and meal price
             $("#btn_add"+id).html('<span class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></span> Updating...');
         $.ajax({
-          url:"process/news.php",
+          url:"process/meals.php",
           type: "POST",
           data:{"img_update": response, "img_id":id},
 
@@ -815,13 +830,15 @@ function setUpdateAttachment(id){
     }).then(function(response){
       //get meal name and meal price
       var titlex  = $("#meal_name").val();
+       var price  = $("#meal_price").val();
+            
             
       if(titlex !== "" ){
         $("#btn_add").html('<span class="spinner-border spinner-border-sm text-light" role="status" aria-hidden="true"></span> Adding...');
         $.ajax({
           url:"process/meals.php",
           type: "POST",
-          data:{"img": response,"title":titlex},
+          data:{"img": response,"title":titlex,"price":price},
 
           cache: false,
 

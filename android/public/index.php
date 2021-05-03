@@ -102,33 +102,98 @@ $app->post('/userlogin', function(Request $request, Response $response){
         ->withStatus(422);    
 });
 
-//get undelivered and assigned orders to this driver
-$app->get('/myorders_incomplete/{user_id}',function(Request $request, Response $response, array $args){
-    $id = $args['user_id'];
+//user register
+$app->post('/userregister', function(Request $request, Response $response){
+
+    if(!haveEmptyParameters(array('fullname','phone','email', 'password','user_role'), $request, $response)){
+        $request_data = $request->getParsedBody(); 
+
+        $fullname = $request_data['fullname'];
+        $phone = $request_data['phone'];
+        $user_role = $request_data['user_role'];
+        $email = $request_data['email'];
+        $pass = $request_data['password'];
+        //encyrpt password
+        $password=password_hash($pass, PASSWORD_DEFAULT);
+
+        $operation = new Functions();
+        
+        $query = "SELECT * FROM `users` WHERE email = '$email' AND user_role <> 'admin' ";
+        $count = $operation->countAll($query);
+        if($count==0){
+
+            $table = "users";
+            $data = [
+                'fullname'=>"$fullname",
+                'phone'=>"$phone",
+                'email'=>"$email",
+                'password'=>"$password",
+                'user_role'=>"$user_role"
+            ];
+
+            if ($operation->insertData($table,$data) == 1) {
+                # code...
+                 $response_data = array();
+            
+                $response_data['error']=false; 
+                $response_data['message'] = 'Account created, please login to continue!';
+
+                $response->write(json_encode($response_data));
+
+                return $response
+                    ->withHeader('Content-type', 'application/json')
+                    ->withStatus(200); 
+            }else{
+                 $response_data = array();
+
+                $response_data['error']=true; 
+                $response_data['message'] = 'An error occured while registering, try again later!';
+
+                $response->write(json_encode($response_data));
+
+                return $response
+                    ->withHeader('Content-type', 'application/json')
+                    ->withStatus(201); 
+            }
+
+           
+      
+            
+        }else{
+           $response_data = array();
+
+            $response_data['error']=true; 
+            $response_data['message'] = 'Email is taken, try another email';
+
+            $response->write(json_encode($response_data));
+
+            return $response
+                ->withHeader('Content-type', 'application/json')
+                ->withStatus(201);  
+        }        
+    }
+
+    return $response
+        ->withHeader('Content-type', 'application/json')
+        ->withStatus(422);    
+});
+
+//get meals
+$app->get('/get_menu_items',function(Request $request, Response $response){
     //get all incomplete
+    $today = date('Y-m-d');
+
     $operation = new Functions();
-    $query = "SELECT 
-    orders.order_id, users.fname, users.lname,users.email, users.phone, orders.user_id,orders.product_id, orders.quantity, orders.payment_status, orders.order_delivery_status,
-    products.product_name, products.restaurant_id, products.product_price, products.availability, products.prep_mins, products.img_url,
-    restaurant_info.city_id, restaurant_info.restaurant_name,restaurant_info.restaurant_phone, restaurant_info.restaurant_address, restaurant_info.placeID, restaurant_info.exact_location, 
-    restaurant_info.longtude, restaurant_info.latitude, restaurant_info.img_url as rest_img,
-    customer_location.placeID as cus_placeID, customer_location.exact_location as cus_exact_location, customer_location.longtude as cus_longtude, customer_location.latitude as cus_latitude,
-    order_assign.date_created as date_assigned
-     FROM `order_assign` 
-    INNER JOIN orders ON order_assign.order_id = orders.order_id
-    INNER JOIN products ON orders.product_id = products.product_id
-    INNER JOIN restaurant_info ON products.restaurant_id = restaurant_info.restaurant_id
-    INNER JOIN users ON users.user_id = orders.user_id
-    INNER JOIN customer_location ON orders.order_id = customer_location.order_id
-    WHERE order_assign.user_id = '$id' AND order_delivery_status = 0";
+    $query = "SELECT *FROM menu_items INNER JOIN meals ON menu_items.meal_id = meals.meal_id
+    WHERE menu_items.menu_expiry_date >= '$today'";
     
     if($operation->countAll($query) > 0 ){
         $my_orders = $operation->retrieveMany($query);
         $response_data = array();
 
         $response_data['error']=false; 
-        $response_data['message'] = 'Assigned Orders';
-        $response_data['orders'] = $my_orders;
+        $response_data['message'] = 'Meals';
+        $response_data['meals'] = $my_orders;
         $response->write(json_encode($response_data));
 
         return $response
@@ -139,7 +204,7 @@ $app->get('/myorders_incomplete/{user_id}',function(Request $request, Response $
         $response_data = array();
                     
         $response_data['error']=true; 
-        $response_data['message'] = 'No Orders were assigned to you!';
+        $response_data['message'] = 'Nothing found in menu!';
 
         $response->write(json_encode($response_data));
 
@@ -152,6 +217,144 @@ $app->get('/myorders_incomplete/{user_id}',function(Request $request, Response $
         ->withStatus(422); 
     
 });
+
+//get dashboard meals
+$app->get('/get_dash_menu_items',function(Request $request, Response $response){
+    //get all incomplete
+    $today = date('Y-m-d');
+
+    $operation = new Functions();
+    $query = "SELECT *FROM menu_items INNER JOIN meals ON menu_items.meal_id = meals.meal_id
+    WHERE menu_items.menu_expiry_date >= '$today' LIMIT 5";
+    
+    if($operation->countAll($query) > 0 ){
+        $my_orders = $operation->retrieveMany($query);
+        $response_data = array();
+
+        $response_data['error']=false; 
+        $response_data['message'] = 'Meals';
+        $response_data['meals'] = $my_orders;
+        $response->write(json_encode($response_data));
+
+        return $response
+            ->withHeader('Content-type', 'application/json')
+            ->withStatus(200);
+        
+    }else{
+        $response_data = array();
+                    
+        $response_data['error']=true; 
+        $response_data['message'] = 'Nothing found in menu!';
+
+        $response->write(json_encode($response_data));
+
+        return $response
+            ->withHeader('Content-type', 'application/json')
+            ->withStatus(200);
+    }
+     return $response
+        ->withHeader('Content-type', 'application/json')
+        ->withStatus(422); 
+    
+});
+
+//get my orders
+$app->get('/myorders/{user_id}',function(Request $request, Response $response, array $args){
+    $id = $args['user_id'];
+    //get all completed orders
+    $operation = new Functions();
+   $query = "SELECT * FROM `orders` 
+                INNER JOIN menu_items ON menu_items.menu_id = orders.menu_id
+                INNER JOIN meals ON menu_items.meal_id = meals.meal_id WHERE orders.user_id = '$id'
+                ";
+    
+    if($operation->countAll($query) > 0 ){
+        $my_orders = $operation->retrieveMany($query);
+        $response_data = array();
+
+        $response_data['error']=false; 
+        $response_data['message'] = 'My Orders';
+        $response_data['orders'] = $my_orders;
+        $response->write(json_encode($response_data));
+
+        return $response
+            ->withHeader('Content-type', 'application/json')
+            ->withStatus(200);
+        
+    }else{
+        $response_data = array();
+                    
+        $response_data['error']=true; 
+        $response_data['message'] = 'Your orders will appear here!';
+
+        $response->write(json_encode($response_data));
+
+        return $response
+            ->withHeader('Content-type', 'application/json')
+            ->withStatus(200);
+    }
+     return $response
+        ->withHeader('Content-type', 'application/json')
+        ->withStatus(422);   
+});
+
+//get my orders
+$app->get('/dashboard_orders',function(Request $request, Response $response){
+    //get all completed orders
+    $operation = new Functions();
+   $query = "SELECT * FROM `orders` 
+                INNER JOIN menu_items ON menu_items.menu_id = orders.menu_id
+                INNER JOIN meals ON menu_items.meal_id = meals.meal_id LIMIT 5
+                ";
+    
+    if($operation->countAll($query) > 0 ){
+        $my_orders = $operation->retrieveMany($query);
+        $response_data = array();
+
+        $response_data['error']=false; 
+        $response_data['message'] = 'Orders';
+        $response_data['orders'] = $my_orders;
+        $response->write(json_encode($response_data));
+
+        return $response
+            ->withHeader('Content-type', 'application/json')
+            ->withStatus(200);
+        
+    }else{
+        $response_data = array();
+                    
+        $response_data['error']=true; 
+        $response_data['message'] = 'Your orders will appear here!';
+
+        $response->write(json_encode($response_data));
+
+        return $response
+            ->withHeader('Content-type', 'application/json')
+            ->withStatus(200);
+    }
+     return $response
+        ->withHeader('Content-type', 'application/json')
+        ->withStatus(422);   
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //get delivered and assigned orders to this driver
 $app->get('/myorders_complete/{user_id}',function(Request $request, Response $response, array $args){
