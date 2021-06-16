@@ -63,6 +63,7 @@ public class MealsDashAdapter extends RecyclerView.Adapter<MealsDashAdapter.Rece
                 i.putExtra("image", recentlyViewedList.get(position).getImg_url());
                 i.putExtra("price", recentlyViewedList.get(position).getPrice());
                 i.putExtra("desc", recentlyViewedList.get(position).getMeal_type());
+                i.putExtra("product_id", recentlyViewedList.get(position).getMeal_id());
                 context.startActivity(i);
 
             }

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    app:cardCornerRadius="8dp"
+
+    tools:context=".fragments.PaymentOptionsBottomSheetFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/lightWhite"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="50dp"
+            android:layout_height="8dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="30dp"
+            android:background="@color/grey"
+            android:fontFamily="@font/open_sans"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/open_sans"
+            android:text="Choose Payment Method"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:id="@+id/linearMobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@color/white"
+            android:elevation="10dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+
+            <ImageView
+                android:id="@+id/imageViewg1x4"
+                android:layout_width="76dp"
+                android:layout_height="45dp"
+                android:layout_weight="0.1"
+                android:src="@drawable/tnm_mpamba" />
+            <ImageView
+                android:id="@+id/imageViewg1x4c"
+                android:layout_width="76dp"
+                android:layout_height="45dp"
+                android:layout_weight="0.1"
+                android:src="@drawable/airtel_mone_icon" />
+
+
+            <TextView
+                android:id="@+id/textVgciew16"
+                android:layout_width="161dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:text="TNM Mpamba or Airtel Money  "
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imagcgeView17"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:maxHeight="35dp"
+                android:src="@drawable/arrow_forward_ios_24"
+                app:tint="@color/black" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearVisa"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@color/white"
+            android:elevation="10dp"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+
+            <ImageView
+                android:id="@+id/imageVigewg14"
+                android:layout_width="76dp"
+                android:layout_height="45dp"
+                android:layout_weight="0.1"
+                android:src="@drawable/paypal_icon"
+               />
+
+            <TextView
+                android:gravity="center"
+                android:id="@+id/textVggiew16"
+                android:layout_width="235dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:lines="1"
+                android:text="PayPal or Visa"
+               android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <ImageView
+                android:id="@+id/imagcgeView1c7"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:maxHeight="35dp"
+                android:src="@drawable/arrow_forward_ios_24"
+                app:tint="@color/black" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

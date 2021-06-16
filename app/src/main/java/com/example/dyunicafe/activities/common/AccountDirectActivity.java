@@ -1,4 +1,4 @@
-package com.example.dyunicafe.activities;
+package com.example.dyunicafe.activities.common;
 
 import androidx.appcompat.app.AppCompatActivity;
 

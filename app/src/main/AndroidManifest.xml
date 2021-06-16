@@ -13,10 +13,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DyuniCafe"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.SearchActivity"></activity>
+        <activity
+            android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="${applicationId}.braintree" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.MobileMoneyPaymentActivity"></activity>
+        <activity android:name=".activities.Payment1Activity" />
+        <activity android:name=".activities.MyOrdersHistoryActivity" />
+        <activity android:name=".activities.ScanBarcodeActivity" />
+        <activity android:name=".activities.SearchActivity" />
         <activity android:name=".activities.common.SignUpActivity" />
         <activity android:name=".activities.common.LoginActivity" />
-        <activity android:name=".activities.AccountDirectActivity" />
+        <activity android:name=".activities.common.AccountDirectActivity" />
         <activity android:name=".activities.common.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,6 +49,9 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
     </application>
 
 </manifest>

@@ -11,9 +11,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Part;
-import retrofit2.http.Path;
 
 
 public interface Api {
@@ -56,6 +54,37 @@ public interface Api {
             @Field("user_id") int user_id
     );
 
+    //MAKE PAYMENT NORMAL
+    @FormUrlEncoded
+    @POST("make_payment_normal")
+    //what kind of response? use ResponseBody if you don't know the kind of response that you will get'nonce', 'amount'
+    Call<LoginResponse> makePaymentStudent(
+            @Field("user_id") int user_id,
+            @Field("meal_id") int product_id,
+            @Field("qty") int qty
+    );
+
+    //MAKE PAYMENT VISA/CARD/PAYPAL
+    @FormUrlEncoded
+    @POST("make_payment_visa")
+    //what kind of response? use ResponseBody if you don't know the kind of response that you will get'nonce', 'amount'
+    Call<LoginResponse> makePayment(
+            @Field("nonce") String nonce,
+            @Field("amount") String amount,
+            @Field("user_id") int user_id,
+            @Field("product_id") int product_id,
+            @Field("qty") int qty
+    );
+
+
+    @FormUrlEncoded
+    @POST("checkout_payment")
+        //what kind of response? use ResponseBody if you don't know the kind of response that you will get
+    Call<LoginResponse> checkoutPayment(
+            @Field("nonce") String nonce,
+            @Field("amount") String amount
+    );
+
 
     //GET METHODS
     @GET("get_menu_items")
@@ -68,5 +97,11 @@ public interface Api {
     @GET("dashboard_orders")
     Call<GetOrdersResponse>getMostOrderMeals(
     );
+
+    //get braintree token
+    @GET("get_braintree_token")
+    Call<LoginResponse> getBrainTreeToken(
+    );
+
 
 }

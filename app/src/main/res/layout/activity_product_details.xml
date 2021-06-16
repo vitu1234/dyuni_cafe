@@ -72,10 +72,10 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:padding="30dp"
         android:id="@+id/card21"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardd"
         tools:ignore="NotSibling">
@@ -86,8 +86,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans_bold"
-            android:textColor="@color/black"
             android:text="TextView"
+            android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -107,16 +107,14 @@
             app:layout_constraintTop_toBottomOf="@+id/productName" />
 
 
-
-
         <TextView
-            android:textColor="@color/black"
             android:id="@+id/prodPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/open_sans_bold"
             android:text="TextView"
+            android:textColor="@color/black"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="@+id/prodDesc"
             app:layout_constraintTop_toBottomOf="@+id/prodDesc" />
@@ -142,10 +140,57 @@
             app:layout_constraintStart_toEndOf="@+id/qty"
             app:layout_constraintTop_toTopOf="@+id/qty" />
 
+        <LinearLayout
+            android:elevation="8dp"
+            android:outlineSpotShadowColor="@color/black"
+            android:gravity="start"
+            android:layout_marginTop="20dp"
+            android:id="@+id/linearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/qty">
+
+            <TextView
+
+                android:layout_marginEnd="10dp"
+                android:textSize="18sp"
+                android:fontFamily="@font/open_sans"
+                android:id="@+id/orderingQuantity"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:text="1" />
+
+            <Button
+                android:onClick="reduceQuantity"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:textSize="24sp"
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="-" />
+
+            <Button
+                android:onClick="addQuantity"
+                style="@style/Widget.AppCompat.Button.Small"
+                android:textSize="24sp"
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="+" />
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
     <com.google.android.material.button.MaterialButton
+        android:onClick="makeOrder"
         android:backgroundTint="@color/colorPrimary"
         android:id="@+id/button"
         android:layout_width="match_parent"

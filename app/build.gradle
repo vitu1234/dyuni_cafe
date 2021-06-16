@@ -31,6 +31,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    repositories {
+        maven {
+            url "https://jitpack.io"
+
+        }
+        maven {
+            url "https://cardinalcommerce.bintray.com/android"
+            credentials {
+                username 'braintree-team-sdk@cardinalcommerce'
+                password '220cc9476025679c4e5c843666c27d97cfb0f951'
+            }
+        }
+    }
 }
 
 dependencies {
@@ -60,4 +73,23 @@ dependencies {
 
     //viewing pictures
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //barcode scanner
+    implementation 'com.google.android.gms:play-services-vision:11.8.0'
+
+    //CIRCLER imageview
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //bottom sheet
+    implementation 'com.mahc.custombottomsheetbehavior:googlemaps-like:0.9.1'
+
+    //image picker
+    implementation 'com.opensooq.supernova:gligar:1.1.0'
+
+    //shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    //paypal sdk
+    implementation 'com.braintreepayments.api:drop-in:4.+'
+
 }

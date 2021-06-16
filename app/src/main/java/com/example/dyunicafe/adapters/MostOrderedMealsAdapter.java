@@ -61,6 +61,7 @@ public class MostOrderedMealsAdapter extends RecyclerView.Adapter<MostOrderedMea
                 i.putExtra("image", discountedProductsList.get(position).getImg_url());
                 i.putExtra("price", discountedProductsList.get(position).getMeal_price());
                 i.putExtra("desc", discountedProductsList.get(position).getMeal_type());
+                i.putExtra("product_id", discountedProductsList.get(position).getMeal_id());
                 context.startActivity(i);
 
             }

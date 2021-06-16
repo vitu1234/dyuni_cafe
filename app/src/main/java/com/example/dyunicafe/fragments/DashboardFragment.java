@@ -6,8 +6,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dyunicafe.R;
 import com.example.dyunicafe.activities.SearchActivity;
-import com.example.dyunicafe.adapters.MostOrderedMealsAdapter;
 import com.example.dyunicafe.adapters.MealsDashAdapter;
+import com.example.dyunicafe.adapters.MostOrderedMealsAdapter;
 import com.example.dyunicafe.api.RetrofitClient;
 import com.example.dyunicafe.models.DiscountedProducts;
 import com.example.dyunicafe.models.GetMealsResponse;
@@ -54,9 +54,9 @@ public class DashboardFragment extends Fragment {
 
 
     MealsDashAdapter mealsDashAdapter;
-    TextView  textViewmoreMeals;
+    TextView textViewmoreMeals;
 
-    EditText editTextSearch;
+    TextView editTextSearch;
 
 
     public DashboardFragment() {
@@ -120,6 +120,7 @@ public class DashboardFragment extends Fragment {
     private void displayFragment(Fragment fragment) {
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, null).commit();
     }
+
     private void setMostOrderdRecycler(List<Order> dataList) {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         discountRecyclerView.setLayoutManager(layoutManager);
@@ -164,8 +165,8 @@ public class DashboardFragment extends Fragment {
 
 //                        db.userDao().insertUser(user);
                     } else {
-                        progressDialog.showDangerAlert(response1.getMessage());
-
+//                        progressDialog.showDangerAlert(response1.getMessage());
+                        Toast.makeText(getActivity(), response1.getMessage(), Toast.LENGTH_SHORT).show();
 
                     }
                 }
@@ -198,6 +199,7 @@ public class DashboardFragment extends Fragment {
                 public void onResponse(Call<GetOrdersResponse> call, Response<GetOrdersResponse> response) {
 //                    progressDialog.closeDialog();
                     GetOrdersResponse response1 = response.body();
+                    if (response1 != null){
                     if (!response1.isError()) {
 //                        progressDialog.showSuccessAlert(response1.getMessage());
                         room_db = AppDatabase.getDbInstance(getContext());
@@ -218,6 +220,8 @@ public class DashboardFragment extends Fragment {
 //                        progressDialog.showDangerAlert(response1.getMessage());
 
 
+                    }}else{
+                        Toast.makeText(getActivity(), "No server response", Toast.LENGTH_SHORT).show();
                     }
                 }
 
