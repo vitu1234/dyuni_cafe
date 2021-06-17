@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -56,6 +58,7 @@ public class Payment1Activity extends AppCompatActivity {
         setContentView(R.layout.activity_payment1);
 
         llHolder = (LinearLayout) findViewById(R.id.llHolder);
+        llHolder.setVisibility(View.GONE);
         btnPay = (Button) findViewById(R.id.btnPay);
         progressDialog = new MyProgressDialog(this);
         checkInternet = new CheckInternet(this);
@@ -83,39 +86,28 @@ public class Payment1Activity extends AppCompatActivity {
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.e("result_code", "" + resultCode);
-
         if (requestCode == REQUEST_CODE) {
-            if (resultCode == Activity.RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
-                PaymentMethodNonce nonce = result.getPaymentMethodNonce();
-                String stringNonce = nonce.getNonce();
-                Log.e("mylog", "Result: " + stringNonce);
-                // Send payment price with the nonce
-                // use the result to update your UI and send the payment method nonce to your server
-                if (!amount.isEmpty()) {
-
-                    paramHash = new HashMap<>();
-                    paramHash.put("amount", String.valueOf(qty * Integer.parseInt(amount)));
-                    paramHash.put("nonce", stringNonce);
-                    sendPaymentDetails(String.valueOf(qty * Integer.parseInt(amount)), stringNonce);
-                } else
-                    Toast.makeText(Payment1Activity.this, "Please enter a valid amount.", Toast.LENGTH_SHORT).show();
-
-            } else if (resultCode == Activity.RESULT_CANCELED) {
-                // the user canceled
-                Log.e("mylog", "user canceled");
+                String paymentMethodNonce = result.getPaymentMethodNonce().getNonce();
+                // send paymentMethodNonce to your server
+                Log.e("ddf","ehe : Nonce "+paymentMethodNonce);
+                sendPaymentDetails(String.valueOf(qty * Integer.parseInt(amount)),paymentMethodNonce);
+            } else if (resultCode == RESULT_CANCELED) {
+                // canceled
+                Log.e("ddf","cancel");
+                Toast.makeText(this, "You cancelled the process", Toast.LENGTH_SHORT).show();
             } else {
-
-                // handle errors here, an exception may be available in
-                Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
-                Log.e("mylogkjnkj", "Error : " + error.toString());
+                // an error occurred, checked the returned exception
+                Exception exception = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
+                Log.e("sdfd",exception.getMessage());
             }
         }
     }
+
 
     private void sendPaymentDetails(String amount, String nonce) {
         progressDialog.showDialog("Processing payment...");
@@ -158,10 +150,47 @@ public class Payment1Activity extends AppCompatActivity {
     }
 
     public void onBraintreeSubmit() {
+//        DropInRequest dropInRequest = new DropInRequest()
+//                .tokenizationKey("sandbox_x6jgq4jn_nskdd9vk7ks6bhhf");
+
+//        startActivityForResult.launch(dropInRequest.getIntent(this));
         DropInRequest dropInRequest = new DropInRequest()
                 .clientToken(token);
+
         startActivityForResult(dropInRequest.getIntent(this), REQUEST_CODE);
     }
+
+ /*   ActivityResultLauncher<Intent> startActivityForResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                Intent data = result.getData();
+                System.out.println(result.getResultCode() + "ffdd");
+                if (result.getResultCode() == REQUEST_CODE) {
+//                    Intent data = result.getData();
+                    // ...
+                    DropInResult resultc = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
+                    PaymentMethodNonce nonce = resultc.getPaymentMethodNonce();
+                    String stringNonce = nonce.getNonce();
+                    Log.e("mylog", "Result: " + stringNonce);
+                    // Send payment price with the nonce
+                    // use the result to update your UI and send the payment method nonce to your server
+                    if (!amount.isEmpty()) {
+
+                        paramHash = new HashMap<>();
+                        paramHash.put("amount", String.valueOf(2));
+                        paramHash.put("nonce", stringNonce);
+                        sendPaymentDetails(String.valueOf(2), stringNonce);
+                    }
+                }else if (result.getResultCode() == AppCompatActivity.RESULT_CANCELED) {
+                    // the user canceled
+                    Log.e("mylog", "user canceled");
+                } else {
+
+                    // handle errors here, an exception may be available in
+                    Exception error = (Exception) data.getSerializableExtra(DropInActivity.EXTRA_ERROR);
+                    Log.e("mylogkjnkj", "Error : " + error.getMessage());
+                }
+            });*/
 
     public void getToken() {
 
@@ -176,6 +205,7 @@ public class Payment1Activity extends AppCompatActivity {
                     if (response1 != null) {
                         if (!response1.isError()) {
                             token = response1.getMessage();
+                            Log.e("token",token);
                             llHolder.setVisibility(View.VISIBLE);
                         } else {
                             progressDialog.showDangerAlert("An error occured on our servers!");
@@ -211,6 +241,9 @@ public class Payment1Activity extends AppCompatActivity {
             int user_id = sharedPrefManager.getUser().getUser_id();
             if (checkInternet.isInternetConnected(this)) {
                 progressDialog.showDialog("One more thing, please wait...");
+
+                Log.e("final_processing","amount "+amount+" nonce: "+nonce+ "product_id: "+product_id+" qty "+qty);
+
                 call = RetrofitClient.getInstance().getApi().makePayment(nonce, amount, user_id, product_id, qty);
                 call.enqueue(new Callback<LoginResponse>() {
                     @Override
@@ -220,7 +253,7 @@ public class Payment1Activity extends AppCompatActivity {
                         if (response1 != null) {
                             if (!response1.isError()) {
                                 progressDialog.showSuccessAlert(response1.getMessage());
-
+                                Log.e("continues","continuing");
                                 new Handler().postDelayed(() -> {
                                     Intent intent = new Intent(Payment1Activity.this, MyOrdersHistoryActivity.class);
                                     startActivity(intent);
@@ -230,7 +263,7 @@ public class Payment1Activity extends AppCompatActivity {
                                 progressDialog.showDangerAlert(response1.getMessage());
                             }
                         } else {
-                            progressDialog.showDangerAlert("An error occuredd, try again later");
+                            progressDialog.showDangerAlert("An error occured, try again later");
                         }
                     }
 
