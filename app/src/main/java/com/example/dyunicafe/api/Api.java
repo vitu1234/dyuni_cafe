@@ -4,6 +4,8 @@ import com.example.dyunicafe.models.GetMealsResponse;
 import com.example.dyunicafe.models.GetOrdersResponse;
 import com.example.dyunicafe.models.LoginResponse;
 
+import java.util.List;
+
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -83,6 +85,15 @@ public interface Api {
     Call<LoginResponse> checkoutPayment(
             @Field("nonce") String nonce,
             @Field("amount") String amount
+    );
+//mobile money screenshot payment
+    @Multipart
+    @POST("payment_with_mobile")
+    Call<LoginResponse> payMobile(
+            @Part MultipartBody.Part file,
+            @Part("user_id2") int user_id,
+            @Part("meal_id2") int product_id,
+            @Part("qty2") int qty
     );
 
 

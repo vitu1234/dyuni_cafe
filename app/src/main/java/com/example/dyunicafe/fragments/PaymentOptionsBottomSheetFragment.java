@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.dyunicafe.R;
+import com.example.dyunicafe.activities.MobileMoneyPaymentActivity;
 import com.example.dyunicafe.activities.Payment1Activity;
 import com.example.dyunicafe.storage.SharedPrefManager;
 import com.example.dyunicafe.utils.CheckInternet;
@@ -71,6 +72,12 @@ public class PaymentOptionsBottomSheetFragment extends BottomSheetDialogFragment
     }
 
     private void payWithMobileMoney() {
+        Intent intent = new Intent(getActivity(), MobileMoneyPaymentActivity.class);
+        intent.putExtra("amount", amount);
+        intent.putExtra("product_id", product_id);
+        intent.putExtra("product_quantity", qty);
+        Log.e("ee", String.valueOf(amount));
+        startActivity(intent);
     }
 
     private void payWithPaypal() {
