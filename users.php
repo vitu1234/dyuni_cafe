@@ -221,7 +221,16 @@
                 <div class="card">
                   <div class="card-header">
                     <div class="card-title"></div>
-           <a  class="btn btn-warning pull-right text-light" href="#add-admin" data-toggle="modal"  role="button" id="addAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="la la-plus text-3 mr-1"></i>Add User</a>
+                    <?php
+                      if ($getUser['user_role'] == "admin") {
+                        # code...
+                          ?>
+                          <a  class="btn btn-warning pull-right text-light" href="#add-admin" data-toggle="modal"  role="button" id="addAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="la la-plus text-3 mr-1"></i>Add User</a>
+                          <?php
+                      }
+
+                    ?>
+      
                   </div>
                   <div class="card-body">
                     <table class="table table-hover" id="user_tbl">
@@ -245,12 +254,15 @@
                                                   $selectedAd = "";
                                                   $selectedStu = "";
                                                   $selectedSta = "";
+                                                  $selectedChef = "";
 
                                                   if ($row['user_role'] == "admin") {
                                                     # code...
                                                     $selectedAd = "selected";
                                                   }elseif($row['user_role'] == "student"){
                                                     $selectedStu= "selected";
+                                                  }elseif($row['user_role'] == "chef"){
+                                                    $selectedChef = "selected";
                                                   }else{
                                                     $selectedSta= "selected";
                                                   }
@@ -283,10 +295,15 @@
                                                   
                                                   
                                                     $selected1 = "selected";
-                                                    $btn_del = '<div class="col-12 col-sm-6">
+                                                    
+
+                                                          if ($getUser['user_role'] == "admin") {
+
+                                                            $btn_del = '<div class="col-12 col-sm-6">
                                                                   <button data-dismiss="modal" onclick="getDeleteUser(\''.$row['user_id'].'\')"  id="btn_e_del'.$row['user_id'].'" class="btn btn-danger btn-block mt-2" type="button">Delete User</button>
                                                           </div>';
-                                                    $btn_sus = '<div class="col-12 col-sm-6">
+
+                                                            $btn_sus = '<div class="col-12 col-sm-6">
                                                              <div class="form-group">
                                                               <label for="firstName">Account Status</label>
                                                                 <p class="demo" data-bv-field="firstName">
@@ -294,6 +311,8 @@
                                                                 </p>  
                                                             </div>   
                                                         </div> ';
+                                                          }
+                                                    
                                                       
                                                 
                                                   
@@ -377,6 +396,7 @@
                                                               <option '.$selectedAd.' value="1">Admin</option>
                                                               <option  '.$selectedStu.' value="2">Student</option>
                                                               <option '.$selectedSta.' value="3" >Staff/Visitor</option>
+                                                              <option '.$selectedChef.' value="4" >Chef</option>
                                                             </select>
                                                           </div>
 
@@ -512,6 +532,8 @@
                       <option value="1">Admin</option>
                       <option value="2">Student</option>
                       <option value="3">Staff/Visitor</option>
+
+                    <option value="4">Chef</option>
                     </select>
                   </div>
 

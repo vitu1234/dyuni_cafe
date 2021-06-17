@@ -218,8 +218,14 @@ $getUser = $operation->retrieveSingle("SELECT *FROM users WHERE user_id = '$user
                   <div class="card-header">
                     <div class="card-title"></div>
                     <a  class="btn btn-warning float-right text-light " href="menus.php" aria-haspopup="true" aria-expanded="false"><i class="fas fa-book text-3 mr-1"></i>Menus</a>
-
-                     <a  class="btn btn-warning float-right text-light mx-4" href="#add-admin" data-toggle="modal"  role="button" id="addAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus text-3 mr-1"></i>Add Meal</a>
+                    <?php
+                      if ($getUser['user_role'] == "admin") {
+                        ?>
+                          <a  class="btn btn-warning float-right text-light mx-4" href="#add-admin" data-toggle="modal"  role="button" id="addAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-plus text-3 mr-1"></i>Add Meal</a>
+                        <?php
+                      }
+                    ?>
+                     
 
                   </div>
                   <div class="card-body">
@@ -241,11 +247,13 @@ $getUser = $operation->retrieveSingle("SELECT *FROM users WHERE user_id = '$user
                                                  
                                                   $btn_del = '';
                                                   $btn_sus = '';
-                                                  
-                                                  
-                                                    $btn_del = '<div class="col-12 col-sm-6">
+                                                  if ($getUser['user_role'] == "admin"){
+                                                       $btn_del = '<div class="col-12 col-sm-6">
                                                                   <button data-dismiss="modal" onclick="getDeleteNews(\''.$row['meal_id'].'\')"  id="btn_e_del'.$row['meal_id'].'" class="btn btn-danger btn-block mt-2" type="button">Delete </button>
-                                                          </div>';
+                                                          </div>'; 
+                                                    }
+                                                  
+                                                    
                                          
                                                       
                                                 

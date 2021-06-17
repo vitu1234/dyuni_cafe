@@ -1,10 +1,13 @@
 <?php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+// use Slim\Http\UploadedFile;
 
 require '../vendor/autoload.php';
 
 require '../../connection/Functions.php';
+// require '../includes/braintreepayments/vendor/autoload.php';
+require '../vendor/braintree/braintree_php/lib/autoload.php';
 
 
 $app = new \Slim\App([
@@ -13,6 +16,28 @@ $app = new \Slim\App([
     ]
 ]);
 
+$gateway = new Braintree\Gateway([
+      'environment' => 'sandbox',
+      'merchantId' => 'nskdd9vk7ks6bhhf',
+      'publicKey' => 'n86cvzm4fcsfpbrd',
+      'privateKey' => '76527d518ab7c550d0f9915949fd5816'
+]);
+
+$container = $app->getContainer();
+$container['upload_directory'] = "../../images/";
+$container['upload_profile'] = "../../img/profile_pictures/";
+$container['gateway'] = $gateway;
+// if(file_exists(__DIR__ . "/../.env")) {
+//     $dotenv = new Dotenv\Dotenv(__DIR__ . "/../");
+//     $dotenv->load();
+// }
+
+// Braintree_Configuration::environment('sandbox');
+// Braintree_Configuration::merchantId('nskdd9vk7ks6bhhf');
+// Braintree_Configuration::publicKey('n86cvzm4fcsfpbrd');
+
+// Braintree_Configuration::privateKey('76527d518ab7c550d0f9915949fd5816');
+
 //$app->add(new Tuupola\Middleware\HttpBasicAuthentication([
 //    "secure"=>false,
 //    "users" => [
@@ -20,7 +45,7 @@ $app = new \Slim\App([
 //    ]
 //]));
 
-
+//POST METHODS
 //user login
 $app->post('/userlogin', function(Request $request, Response $response){
 
@@ -178,6 +203,371 @@ $app->post('/userregister', function(Request $request, Response $response){
         ->withStatus(422);    
 });
 
+//checkout payment
+$app->post('/make_payment_visa', function(Request $request, Response $response){
+
+    if(!haveEmptyParameters(array('nonce', 'amount', 'user_id', 'product_id','qty'), $request, $response)){
+        $request_data = $request->getParsedBody(); 
+        
+
+        $operation = new Functions();
+        $nonce = $request_data['nonce'];
+        $amount = $request_data['amount'];
+
+        $user_id = $request_data['user_id'];
+        $product_id = $request_data['product_id'];
+        $qty = $request_data['qty'];
+        
+       $response_data = array();
+
+        // $response_data['error']=false; 
+
+        // echo $result->message." ".$result->success;
+        //make order
+            $table = "orders";
+            $data = [
+                'user_id'=>"$user_id",
+                'meal_id'=>"$product_id",
+                'qty'=>"$qty"
+            ];
+        if ($operation->insertData($table,$data) ==1) {
+
+           
+            // $operation->insertData($table,$data);
+            //save in order payments
+            //get the order first
+            $getOrder = $operation->retrieveSingle("SELECT * FROM `orders` WHERE user_id = '$user_id' AND meal_id = '$product_id' ORDER BY order_id DESC");
+            $order_id = $getOrder['order_id'];
+
+            $payment_type = "Visa";
+            $tabl = "order_payments";
+            $dat = [
+                'order_id'=>"$order_id",
+                'payment_type'=>"$payment_type",
+            ];
+            $operation->insertData($tabl,$dat);
+
+            //save transaction
+            $trans_type = "2";
+            $tbl = "transactions";
+            $dt = [
+                'user_id'=>"$user_id",
+                'amount'=>"$amount",
+                'trans_type'=>"$trans_type"
+            ];
+            $operation->insertData($tbl,$dt);
+
+
+
+            $response_data['error']=false; 
+            $response_data['message'] = 'success';
+
+            $response->write(json_encode($response_data));
+
+            return $response
+                ->withHeader('Content-type', 'application/json')
+                ->withStatus(200); 
+        }else{
+            $response_data['error']=true; 
+            $response_data['message'] = 'Transaction Failed ';
+
+            $response->write(json_encode($response_data));
+
+            return $response
+                ->withHeader('Content-type', 'application/json')
+                ->withStatus(201); 
+        }
+
+        $response->write(json_encode($result));
+
+        return $response
+            ->withHeader('Content-type', 'application/json')
+            ->withStatus(201);  
+        }
+        
+        
+    
+    return $response
+        ->withHeader('Content-type', 'application/json')
+        ->withStatus(422);    
+});
+
+$app->post('/make_payment_normal', function(Request $request, Response $response){
+
+    if(!haveEmptyParameters(array('user_id', 'meal_id','qty'), $request, $response)){
+        $request_data = $request->getParsedBody(); 
+        $operation = new Functions();
+        $user_id = $request_data['user_id'];
+        $meal_id = $request_data['meal_id'];
+        $qty = $request_data['qty'];
+        
+        $response_data = array();
+
+        //get the product
+        $getMeal = $operation->retrieveSingle("SELECT * FROM `meals` WHERE meal_id = '$meal_id'");
+        $mealPriceByQty = $getMeal['meal_price'] * $qty;
+
+        //getUser balance
+        $getUser = $operation->retrieveSingle("SELECT *FROM users WHERE user_id = '$user_id'");
+        $balance = $getUser['account_balance'];
+
+        if ($balance >= $mealPriceByQty) {
+            //make order
+            $table = "orders";
+            $data = [
+                'user_id'=>"$user_id",
+                'meal_id'=>"$meal_id",
+                'qty'=>"$qty"
+            ];
+            if ($operation->insertData($table,$data) ==1) {
+                # code...
+            
+                //save in order payments
+                //get the order first
+                $getOrder = $operation->retrieveSingle("SELECT * FROM `orders` WHERE user_id = '$user_id' AND meal_id = '$meal_id' ORDER BY order_id DESC");
+                $order_id = $getOrder['order_id'];
+
+                $payment_type = "Cafe Deposits";
+                $tabl = "order_payments";
+                $dat = [
+                    'order_id'=>"$order_id",
+                    'payment_type'=>"$payment_type",
+                ];
+                $operation->insertData($tabl,$dat);
+
+                //save transaction
+                $trans_type = "2";
+                $tbl = "transactions";
+                $dt = [
+                    'user_id'=>"$user_id",
+                    'amount'=>"$mealPriceByQty",
+                    'trans_type'=>"$trans_type"
+                ];
+                $operation->insertData($tbl,$dt);
+
+                //deduct the amount from user balance
+                $getUser = $operation->retrieveSingle("SELECT * FROM `users` WHERE user_id = '$user_id'");
+                $newBalance = $getUser['account_balance']-$mealPriceByQty;
+                //update user with new balance
+                $tb = "users";
+                $dtc = [
+                    'account_balance'=>"$newBalance"
+                ];
+                $where = "user_id = '$user_id";
+                $operation->updateData($tb,$dtc,$where);
+
+
+                $response_data['error']=false; 
+                $response_data['message'] = 'success';
+
+                $response->write(json_encode($response_data));
+
+                return $response
+                    ->withHeader('Content-type', 'application/json')
+                    ->withStatus(200); 
+            }else{
+                $response_data['error']=true; 
+            $response_data['message'] = 'An error occured while making your order!';
+
+            $response->write(json_encode($response_data));
+
+            return $response
+                ->withHeader('Content-type', 'application/json')
+                ->withStatus(200); 
+            }
+        }else{
+
+            $response_data['error']=true; 
+            $response_data['message'] = 'Your balance is insufficient, please deposit &amp; try again!';
+
+            $response->write(json_encode($response_data));
+
+            return $response
+                ->withHeader('Content-type', 'application/json')
+                ->withStatus(200); 
+        }
+
+
+        $response->write(json_encode($result));
+
+        return $response
+            ->withHeader('Content-type', 'application/json')
+            ->withStatus(201);  
+        }
+        
+        
+    
+    return $response
+        ->withHeader('Content-type', 'application/json')
+        ->withStatus(422);    
+});
+
+//checkout payment
+$app->post('/checkout_payment', function(Request $request, Response $response){
+
+    if(!haveEmptyParameters(array('nonce', 'amount'), $request, $response)){
+        $request_data = $request->getParsedBody(); 
+        $gateway = $this->get('gateway');
+        $nonce = $request_data['nonce'];
+        $amount = $request_data['amount'];
+        
+       $response_data = array();
+
+        // $response_data['error']=false; 
+
+        $result = $gateway->transaction()->sale([
+          'amount' => $amount,
+          'paymentMethodNonce' =>  $nonce,
+            'merchantAccountId' => 'netsoftmalawi',
+          'customer' => [
+            'firstName' =>  null,
+            'lastName' =>  null,
+          ],
+          'options' => [
+            'submitForSettlement' => true
+          ]
+        ]);
+
+        // echo $result->message;
+
+        if ($result->success == true) {
+
+            $response_data['error']=false; 
+            $response_data['message'] = 'success';
+
+            $response->write(json_encode($response_data));
+
+            return $response
+                ->withHeader('Content-type', 'application/json')
+                ->withStatus(200); 
+        }else{
+            $response_data['error']=true; 
+            $response_data['message'] = 'Transaction Failed '.$result->error;
+
+            $response->write(json_encode($response_data));
+
+            return $response
+                ->withHeader('Content-type', 'application/json')
+                ->withStatus(201); 
+        }
+
+        $response->write(json_encode($result));
+
+        return $response
+            ->withHeader('Content-type', 'application/json')
+            ->withStatus(201);  
+        }
+        
+        
+    
+    return $response
+        ->withHeader('Content-type', 'application/json')
+        ->withStatus(422);    
+});
+
+$app->post('/payment_with_mobile', function(Request $request, Response $response){
+
+    if(!haveEmptyParameters(array('user_id2', 'meal_id2','qty2'), $request, $response)){
+        $request_data = $request->getParsedBody(); 
+        $operation = new Functions();
+
+        $directory = $this->get('upload_directory');
+
+        $uploadedFiles = $request->getUploadedFiles();
+
+        $user_id = $request_data['user_id2'];
+        $meal_id = $request_data['meal_id2'];
+        $qty = $request_data['qty2'];
+        
+        $response_data = array();
+
+        //get the product
+        $getMeal = $operation->retrieveSingle("SELECT * FROM `meals` WHERE meal_id = '$meal_id'");
+        $mealPriceByQty = $getMeal['meal_price'] * $qty;
+
+        //getUser balance
+        $getUser = $operation->retrieveSingle("SELECT *FROM users WHERE user_id = '$user_id'");
+
+        $table = "orders";
+        $data = [
+            'user_id'=>"$user_id",
+            'meal_id'=>"$meal_id",
+            'qty'=>"$qty"
+        ];
+        if ($operation->insertData($table,$data) ==1) {
+            # code...
+        
+            //save in order payments
+            //get the order first
+            $getOrder = $operation->retrieveSingle("SELECT * FROM `orders` WHERE user_id = '$user_id' AND meal_id = '$meal_id' ORDER BY order_id DESC");
+            $order_id = $getOrder['order_id'];
+
+
+               // handle single input with multiple file uploads
+            foreach ($uploadedFiles['file'] as $uploadedFile) {
+                if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+                    $filename = moveUploadedFile($directory, $uploadedFile);
+                    // $response->write('uploaded ' . $filename . '<br/>');
+                   
+                    $payment_type = "Mobile Wallet";
+                    $tabl = "order_payments";
+                    $dat = [
+                        'order_id'=>"$order_id",
+                        'payment_type'=>"$payment_type",
+                        'screenshot'=>"$filename"
+                    ];
+                    $operation->insertData($tabl,$dat);
+                }
+            }
+
+            //save transaction
+            $trans_type = "2";
+            $tbl = "transactions";
+            $dt = [
+                'user_id'=>"$user_id",
+                'amount'=>"$mealPriceByQty",
+                'trans_type'=>"$trans_type"
+            ];
+            $operation->insertData($tbl,$dt);
+
+            $response_data['error']=false; 
+            $response_data['message'] = 'Success, please wait!';
+
+            $response->write(json_encode($response_data));
+
+            return $response
+                ->withHeader('Content-type', 'application/json')
+                ->withStatus(200); 
+            }else{
+                $response_data['error']=true; 
+            $response_data['message'] = 'An error occured while making your order!';
+
+            $response->write(json_encode($response_data));
+
+            return $response
+                ->withHeader('Content-type', 'application/json')
+                ->withStatus(200); 
+            }
+
+        $response->write(json_encode($result));
+
+        return $response
+            ->withHeader('Content-type', 'application/json')
+            ->withStatus(201);  
+        }
+        
+        
+    
+    return $response
+        ->withHeader('Content-type', 'application/json')
+        ->withStatus(422);    
+});
+
+
+
+
+
+//GET METHODS
 //get meals
 $app->get('/get_menu_items',function(Request $request, Response $response){
     //get all incomplete
@@ -303,8 +693,8 @@ $app->get('/dashboard_orders',function(Request $request, Response $response){
     //get all completed orders
     $operation = new Functions();
    $query = "SELECT * FROM `orders` 
-                INNER JOIN menu_items ON menu_items.menu_id = orders.menu_id
-                INNER JOIN meals ON menu_items.meal_id = meals.meal_id LIMIT 5
+                INNER JOIN meals ON orders.meal_id = meals.meal_id
+                LIMIT 5
                 ";
     
     if($operation->countAll($query) > 0 ){
@@ -324,7 +714,7 @@ $app->get('/dashboard_orders',function(Request $request, Response $response){
         $response_data = array();
                     
         $response_data['error']=true; 
-        $response_data['message'] = 'Your orders will appear here!';
+        $response_data['message'] = 'Recent orders will appear here!';
 
         $response->write(json_encode($response_data));
 
@@ -335,6 +725,36 @@ $app->get('/dashboard_orders',function(Request $request, Response $response){
      return $response
         ->withHeader('Content-type', 'application/json')
         ->withStatus(422);   
+});
+
+//get braintree client token
+$app->get('/get_braintree_token',function(Request $request, Response $response){
+
+    $gateway = $this->get('gateway');
+    $response_data = array();
+    // $gateway = new Braintree\Gateway([
+    //       'environment' => 'sandbox',
+    //       'merchantId' => 'nskdd9vk7ks6bhhf',
+    //       'publicKey' => 'n86cvzm4fcsfpbrd',
+    //       'privateKey' => '76527d518ab7c550d0f9915949fd5816'
+    //     ]);
+
+    
+    // $clientToken = Braintree_ClientToken::generate(["version"=>"3"]);
+    // pass $clientToken to your front-end
+    $clientToken = $gateway->clientToken()->generate();
+
+// echo  json_encode(array("error"=>false, "message"=>$clientToken));
+                
+    $response_data['error']=false; 
+    $response_data['message'] = $clientToken;
+
+    $response->write(json_encode($response_data));
+
+    return $response
+        ->withHeader('Content-type', 'application/json')
+        ->withStatus(200);
+  
 });
 
 
@@ -1197,6 +1617,26 @@ function haveEmptyParameters($required_params, $request, $response){
     }
     return $error; 
 }
+
+
+/**
+ * Moves the uploaded file to the upload directory and assigns it a unique name
+ * to avoid overwriting an existing uploaded file.
+ *
+ * @param string $directory directory to which the file is moved
+ * @param UploadedFile $uploadedFile file uploaded file to move
+ * @return string filename of moved file
+ */
+function moveUploadedFile($directory, Slim\Http\UploadedFile $uploadedFile){
+    $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+    $basename = bin2hex(random_bytes(8)); // see http://php.net/manual/en/function.random-bytes.php
+    $filename = sprintf('%s.%0.8s', $basename, $extension);
+
+    $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+
+    return $filename;
+}
+
 
 $app->run();
 

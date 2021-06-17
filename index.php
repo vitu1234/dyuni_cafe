@@ -395,7 +395,7 @@
                                                             </div>
                                                          </div>
                                                          
-                                                         <input type="hidden" id="e_news_id'.$order_id.'" name="e_news_id" value="'.$order_idd.'"/>
+                                                         <input type="hidden" id="e_news_id'.$order_id.'" name="e_news_id" value="'.$order_id.'"/>
                                                          
                                                   
                                                          <div class="row">
