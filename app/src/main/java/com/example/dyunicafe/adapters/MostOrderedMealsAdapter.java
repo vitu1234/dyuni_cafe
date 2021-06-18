@@ -42,7 +42,7 @@ public class MostOrderedMealsAdapter extends RecyclerView.Adapter<MostOrderedMea
 
         holder.textMealName.setText(discountedProductsList.get(position).getMeal_name());
         holder.textPrice.setText(discountedProductsList.get(position).getMeal_price());
-        holder.textType.setText(discountedProductsList.get(position).getMeal_type());
+        holder.textType.setText("");
         //setpicture
         String image = discountedProductsList.get(position).getImg_url();
         String imageUri = RetrofitClient.BASE_URL2 + "images/" + image;
@@ -60,7 +60,7 @@ public class MostOrderedMealsAdapter extends RecyclerView.Adapter<MostOrderedMea
                 i.putExtra("name", discountedProductsList.get(position).getMeal_name());
                 i.putExtra("image", discountedProductsList.get(position).getImg_url());
                 i.putExtra("price", discountedProductsList.get(position).getMeal_price());
-                i.putExtra("desc", discountedProductsList.get(position).getMeal_type());
+                i.putExtra("desc", "");
                 i.putExtra("product_id", discountedProductsList.get(position).getMeal_id());
                 context.startActivity(i);
 

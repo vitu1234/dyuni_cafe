@@ -32,10 +32,10 @@
 
     <!--    MENU STRINGS-->
     <string name="menu_home">Home</string>
-    <string name="menu_favorites">Favorites</string>
+    <string name="menu_favorites">My Orders</string>
     <string name="menu_city">Choose City</string>
     <string name="menu_profile">My Profile</string>
-    <string name="menu_order_history">Order History</string>
+    <string name="menu_order_history">My orders</string>
     <string name="menu_terms">Terms &amp; Conditions</string>
     <string name="menu_help">Leave message</string>
     <string name="menu_doc_verify">Doc Verify</string>

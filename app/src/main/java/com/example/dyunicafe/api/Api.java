@@ -3,6 +3,7 @@ package com.example.dyunicafe.api;
 import com.example.dyunicafe.models.GetMealsResponse;
 import com.example.dyunicafe.models.GetOrdersResponse;
 import com.example.dyunicafe.models.LoginResponse;
+import com.example.dyunicafe.models.MyOrdersResponse;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 
 
 public interface Api {
@@ -112,6 +114,12 @@ public interface Api {
     //get braintree token
     @GET("get_braintree_token")
     Call<LoginResponse> getBrainTreeToken(
+    );
+
+    //get my orders
+    @GET("myorders/{user_id}")
+    Call<MyOrdersResponse> getMyOrders(
+            @Path("user_id") int user_id
     );
 
 

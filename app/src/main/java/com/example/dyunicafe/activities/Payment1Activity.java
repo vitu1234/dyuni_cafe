@@ -257,7 +257,7 @@ public class Payment1Activity extends AppCompatActivity {
                                 new Handler().postDelayed(() -> {
                                     Intent intent = new Intent(Payment1Activity.this, MyOrdersHistoryActivity.class);
                                     startActivity(intent);
-
+                                    finish();
                                 }, 800);
                             } else {
                                 progressDialog.showDangerAlert(response1.getMessage());

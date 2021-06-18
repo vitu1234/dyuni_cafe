@@ -13,8 +13,14 @@ public interface OrderDao {
     @Query("SELECT * FROM `order`")
     List<Order> getAllOrders();
 
+    @Query("SELECT * FROM `order` WHERE order_id =:id ")
+    Order getSingleOrders(int id);
+
     @Insert
     void insertOrder(Order... orders);
+
+    @Query("DELETE  FROM `order`")
+    Void deleteAllOrders();
 
     @Delete
     void delete(Order order);

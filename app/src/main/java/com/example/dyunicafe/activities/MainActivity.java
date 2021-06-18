@@ -54,7 +54,7 @@ MainActivity extends AppCompatActivity implements NavigationView.OnNavigationIte
         //opena navigation drawer
         openNavigationDrawer();
 
-        displayFragment(new DashboardFragment());
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new DashboardFragment(), null).commit();
 
         //check received any data
 //        if (savedInstanceState == null) {
@@ -182,8 +182,9 @@ MainActivity extends AppCompatActivity implements NavigationView.OnNavigationIte
                 break;
 
             case R.id.nav_order_history:
-                displayFragment(new MyOrdersFragment());
+                startActivity(new Intent(this, MyOrdersHistoryActivity.class));
                 break;
+
         }
 
 
@@ -202,7 +203,7 @@ MainActivity extends AppCompatActivity implements NavigationView.OnNavigationIte
 
     //hooking fragments
     private void displayFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment, null).addToBackStack(null).commit();
     }
 
     //changing view items when logged in or not
