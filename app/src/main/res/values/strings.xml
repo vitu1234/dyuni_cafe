@@ -87,6 +87,8 @@
     <string name="confirm_password_txt">Confirm Password</string>
     <string name="change_password">Change Password</string>
     <string name="dyuni_cafe_txt">DYUNI CAFE</string>
+    <string name="forget_password_txt"> RESET PASSWORD</string>
+
     <style name="FabStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

@@ -6,8 +6,6 @@ import com.example.dyunicafe.models.GetPictureResponse;
 import com.example.dyunicafe.models.LoginResponse;
 import com.example.dyunicafe.models.MyOrdersResponse;
 
-import java.util.List;
-
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -90,7 +88,8 @@ public interface Api {
             @Field("nonce") String nonce,
             @Field("amount") String amount
     );
-//mobile money screenshot payment
+
+    //mobile money screenshot payment
     @Multipart
     @POST("payment_with_mobile")
     Call<LoginResponse> payMobile(
@@ -99,6 +98,7 @@ public interface Api {
             @Part("meal_id2") int product_id,
             @Part("qty2") int qty
     );
+
     //add profile picture
     @Multipart
     @POST("upload_profile")
@@ -107,17 +107,48 @@ public interface Api {
             @Part("user_id") int user_id
     );
 
+    //reset user password | sends code to email
+    @FormUrlEncoded
+    @PUT("reset_password1")
+    //what kind of response? use ResponseBody if you don't know the kind of response that you will get
+    Call<LoginResponse> resetPass1(
+            @Field("email") String email
+    );
+
+    @FormUrlEncoded
+    @PUT("reset_password2")
+        //what kind of response? use ResponseBody if you don't know the kind of response that you will get
+    Call<LoginResponse> resetPass2(
+            @Field("email") String email,
+            @Field("code") String code
+    );
+
+    @FormUrlEncoded
+    @PUT("reset_password3")
+        //what kind of response? use ResponseBody if you don't know the kind of response that you will get
+    Call<LoginResponse> resetPass3(
+            @Field("email") String email,
+            @Field("password1") String pass1,
+            @Field("password2") String pass2
+    );
+
 
     //GET METHODS
     @GET("get_menu_items")
-    Call<GetMealsResponse>getMealsResponse(
+    Call<GetMealsResponse> getMealsResponse(
+    );
+
+    @GET("search_menu_items/{query}")
+    Call<GetMealsResponse> getSearchedMeals(
+            @Path("query") String query
     );
 
     @GET("get_dash_menu_items")
-    Call<GetMealsResponse>getMealsDashResponse(
+    Call<GetMealsResponse> getMealsDashResponse(
     );
+
     @GET("dashboard_orders")
-    Call<GetOrdersResponse>getMostOrderMeals(
+    Call<GetOrdersResponse> getMostOrderMeals(
     );
 
     //get braintree token
@@ -145,6 +176,7 @@ public interface Api {
             @Field("user_id") int user_id,
             @Field("new_phone") String new_phone
     );
+
     //CHANGE password
     @FormUrlEncoded
     @PUT("changepassword")

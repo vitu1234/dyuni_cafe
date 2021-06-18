@@ -4,14 +4,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:transitionName="searchTransition"
     tools:context=".activities.SearchActivity">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/const2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Search Activity"
+        android:background="@color/lightWhite"
+        android:elevation="8dp"
+        android:padding="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:src="@drawable/arrow_back"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/back2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="gobaxj"
+            android:padding="5dp"
+             />
+
+        <SearchView
+            android:backgroundTint="@color/black"
+            android:padding="5dp"
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
+            android:layoutDirection="rtl"
+            android:layout_height="42dp"
+            android:layout_toEndOf="@id/back2"
+            android:layout_centerVertical="true" />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerSearchMeals"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/const2" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

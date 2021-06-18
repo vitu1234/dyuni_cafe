@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.dyunicafe.R;
 import com.example.dyunicafe.activities.SearchActivity;
@@ -52,6 +53,8 @@ public class DashboardFragment extends Fragment {
     MostOrderedMealsAdapter mostOrderedMealsAdapter;
     List<DiscountedProducts> discountedProductsList;
 
+    SwipeRefreshLayout swipeRefreshLayout;
+
 
     MealsDashAdapter mealsDashAdapter;
     TextView textViewmoreMeals;
@@ -78,6 +81,16 @@ public class DashboardFragment extends Fragment {
         checkInternet = new CheckInternet(getContext());
         progressDialog = new MyProgressDialog(getContext());
         room_db = AppDatabase.getDbInstance(getContext());
+        swipeRefreshLayout = view.findViewById(R.id.swipeHome);
+        swipeRefreshLayout.setRefreshing(true);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getMeals();
+                getMostOrder();
+            }
+        });
 
         discountRecyclerView = view.findViewById(R.id.discountedRecycler);
 
@@ -97,14 +110,6 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-//        allCategory.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent i = new Intent(getContext(), AllCategory.class);
-//                startActivity(i);
-//            }
-//        });
-
         // adding data to model
         discountedProductsList = new ArrayList<>();
         discountedProductsList.add(new DiscountedProducts(1, "Sausage", "K1,200", R.drawable.sausage));
@@ -115,6 +120,30 @@ public class DashboardFragment extends Fragment {
 
         getMostOrder();
         getMeals();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (call != null) {
+            call.cancel();
+        }
+
+        if (ordersCall != null) {
+            ordersCall.cancel();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (call != null) {
+            call.cancel();
+        }
+
+        if (ordersCall != null) {
+            ordersCall.cancel();
+        }
     }
 
     private void displayFragment(Fragment fragment) {
@@ -147,6 +176,7 @@ public class DashboardFragment extends Fragment {
                 @Override
                 public void onResponse(Call<GetMealsResponse> call, Response<GetMealsResponse> response) {
                     progressDialog.closeDialog();
+                    swipeRefreshLayout.setRefreshing(false);
                     GetMealsResponse response1 = response.body();
                     if (!response1.isError()) {
 //                        progressDialog.showSuccessAlert(response1.getMessage());
@@ -174,6 +204,7 @@ public class DashboardFragment extends Fragment {
                 @Override
                 public void onFailure(Call<GetMealsResponse> call, Throwable t) {
                     progressDialog.closeDialog();
+                    swipeRefreshLayout.setRefreshing(false);
                     try {
                         progressDialog.showDangerAlert("An error occured, try again later;;");
                         Log.e("error", t.getMessage());
@@ -198,29 +229,31 @@ public class DashboardFragment extends Fragment {
                 @Override
                 public void onResponse(Call<GetOrdersResponse> call, Response<GetOrdersResponse> response) {
 //                    progressDialog.closeDialog();
+                    swipeRefreshLayout.setRefreshing(false);
                     GetOrdersResponse response1 = response.body();
-                    if (response1 != null){
-                    if (!response1.isError()) {
+                    if (response1 != null) {
+                        if (!response1.isError()) {
 //                        progressDialog.showSuccessAlert(response1.getMessage());
-                        room_db = AppDatabase.getDbInstance(getContext());
-                        orderList = response1.getOrders();
+                            room_db = AppDatabase.getDbInstance(getContext());
+                            orderList = response1.getOrders();
 
-                        for (int i = 0; i < orderList.size(); i++) {
+                            for (int i = 0; i < orderList.size(); i++) {
 //                            Log.e("meals", String.valueOf(mealList.get(i)));
-                            room_db.orderDao().insertOrder((orderList.get(i)));
+                                room_db.orderDao().insertOrder((orderList.get(i)));
 //                            Log.e("price", mealList.get(i).getPrice());
 
-                        }
-                        setMostOrderdRecycler(orderList);
-                        Log.e("size", String.valueOf(room_db.mealDao().getAllMeals().size()));
+                            }
+                            setMostOrderdRecycler(orderList);
+                            Log.e("size", String.valueOf(room_db.mealDao().getAllMeals().size()));
 
 
 //                        db.userDao().insertUser(user);
-                    } else {
+                        } else {
 //                        progressDialog.showDangerAlert(response1.getMessage());
 
 
-                    }}else{
+                        }
+                    } else {
                         Toast.makeText(getActivity(), "No server response", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -228,6 +261,7 @@ public class DashboardFragment extends Fragment {
                 @Override
                 public void onFailure(Call<GetOrdersResponse> call, Throwable t) {
 //                    progressDialog.closeDialog();
+                    swipeRefreshLayout.setRefreshing(false);
                     try {
 //                        progressDialog.showDangerAlert("An error occured, try again later;;");
                         Log.e("error", t.getMessage());

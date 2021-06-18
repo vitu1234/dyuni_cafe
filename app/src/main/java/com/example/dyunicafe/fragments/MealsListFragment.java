@@ -44,6 +44,7 @@ public class MealsListFragment extends Fragment {
     List<RecentlyViewed> myOrdersList;
     List<Meal> mealList;
 
+
     RecyclerView recyclerViewOrders;
 
     public MealsListFragment() {
@@ -100,7 +101,6 @@ public class MealsListFragment extends Fragment {
                     progressDialog.closeDialog();
                     GetMealsResponse response1 = response.body();
                     if (!response1.isError()) {
-                        progressDialog.showSuccessAlert(response1.getMessage());
                         room_db = AppDatabase.getDbInstance(getContext());
                         mealList = response1.getMeals();
 

@@ -13,7 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DyuniCafe"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.ProfileActivity"></activity>
+        <activity android:name=".activities.common.ForgetPassword3Activity"></activity>
+        <activity android:name=".activities.common.ForgetPassword2Activity" />
+        <activity android:name=".activities.common.ForgetPassword1Activity" />
+        <activity android:name=".activities.ProfileActivity" />
         <activity android:name=".activities.MyOrderDetailsActivity" />
         <activity
             android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"

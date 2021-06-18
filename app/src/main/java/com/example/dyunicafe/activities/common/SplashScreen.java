@@ -13,7 +13,7 @@ import com.example.dyunicafe.activities.MainActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private static int SLIDE_TIMER = 5000;
+    private static int SLIDE_TIMER = 3000;
 
     SharedPreferences sharedPreferencesOnboardingScreen;
 
