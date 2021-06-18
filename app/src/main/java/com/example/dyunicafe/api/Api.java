@@ -2,6 +2,7 @@ package com.example.dyunicafe.api;
 
 import com.example.dyunicafe.models.GetMealsResponse;
 import com.example.dyunicafe.models.GetOrdersResponse;
+import com.example.dyunicafe.models.GetPictureResponse;
 import com.example.dyunicafe.models.LoginResponse;
 import com.example.dyunicafe.models.MyOrdersResponse;
 
@@ -14,6 +15,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
 
@@ -97,6 +99,13 @@ public interface Api {
             @Part("meal_id2") int product_id,
             @Part("qty2") int qty
     );
+    //add profile picture
+    @Multipart
+    @POST("upload_profile")
+    Call<GetPictureResponse> uploadProfileImage(
+            @Part MultipartBody.Part file,
+            @Part("user_id") int user_id
+    );
 
 
     //GET METHODS
@@ -120,6 +129,29 @@ public interface Api {
     @GET("myorders/{user_id}")
     Call<MyOrdersResponse> getMyOrders(
             @Path("user_id") int user_id
+    );
+
+    //view picture
+    @GET("get_picture/{user_id}/{type}")
+    Call<GetPictureResponse> getPicture(
+            @Path("user_id") int user_id,
+            @Path("type") String type
+    );
+
+    //PUT METHODS
+    @FormUrlEncoded
+    @PUT("changephone")
+    Call<LoginResponse> changePhone(
+            @Field("user_id") int user_id,
+            @Field("new_phone") String new_phone
+    );
+    //CHANGE password
+    @FormUrlEncoded
+    @PUT("changepassword")
+    Call<LoginResponse> changePassword(
+            @Field("user_id") int user_id,
+            @Field("password1") String password1,
+            @Field("password2") String password2
     );
 
 

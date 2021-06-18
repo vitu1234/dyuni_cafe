@@ -178,7 +178,7 @@ MainActivity extends AppCompatActivity implements NavigationView.OnNavigationIte
                 displayFragment(new AboutAppFragment());
                 break;
             case R.id.nav_profile:
-                displayFragment(new UserProfileFragment());
+                startActivity(new Intent(this, ProfileActivity.class));
                 break;
 
             case R.id.nav_order_history:
