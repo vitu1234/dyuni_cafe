@@ -1,9 +1,4 @@
 package com.example.dyunicafe.activities;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,14 +9,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+
 import com.example.dyunicafe.R;
 import com.example.dyunicafe.activities.common.UserTypeSelectActivity;
 import com.example.dyunicafe.fragments.AboutAppFragment;
 import com.example.dyunicafe.fragments.DashboardFragment;
 import com.example.dyunicafe.fragments.MealsListFragment;
-import com.example.dyunicafe.fragments.MyOrdersFragment;
-import com.example.dyunicafe.fragments.NeedHelpFragment;
-import com.example.dyunicafe.fragments.UserProfileFragment;
 import com.example.dyunicafe.storage.SharedPrefManager;
 import com.google.android.material.navigation.NavigationView;
 
@@ -170,9 +168,9 @@ MainActivity extends AppCompatActivity implements NavigationView.OnNavigationIte
                 displayFragment(new DashboardFragment());
                 break;
 
-            case R.id.nav_needHelp:
-                displayFragment(new NeedHelpFragment());
-                break;
+//            case R.id.nav_needHelp:
+//                displayFragment(new NeedHelpFragment());
+//                break;
 
             case R.id.nav_about_app:
                 displayFragment(new AboutAppFragment());
@@ -190,6 +188,7 @@ MainActivity extends AppCompatActivity implements NavigationView.OnNavigationIte
 
         return true;
     }
+
     //logout the person from the app
     private void logout() {
         //get stored data
@@ -207,7 +206,7 @@ MainActivity extends AppCompatActivity implements NavigationView.OnNavigationIte
     }
 
     //changing view items when logged in or not
-    private void loginMenuSetting(){
+    private void loginMenuSetting() {
         Menu menu = navigationView.getMenu();
         SharedPrefManager sharedPrefManager = new SharedPrefManager(getApplicationContext());
         if (sharedPrefManager.isLoggedIn()) {
@@ -215,14 +214,14 @@ MainActivity extends AppCompatActivity implements NavigationView.OnNavigationIte
             menu.findItem(R.id.nav_logout).setVisible(true);
             menu.findItem(R.id.nav_profile).setVisible(true);
             menu.findItem(R.id.nav_order_history).setVisible(true);
-        }else{
+        } else {
             menu.findItem(R.id.nav_logout).setVisible(false);
             menu.findItem(R.id.nav_profile).setVisible(false);
             menu.findItem(R.id.nav_order_history).setVisible(false);
             menu.findItem(R.id.nav_login).setVisible(true);
         }
 
-
+        menu.findItem(R.id.nav_needHelp).setVisible(false);
 
     }
 

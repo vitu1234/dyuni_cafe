@@ -1,7 +1,5 @@
 package com.example.dyunicafe.activities.common;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
@@ -9,6 +7,8 @@ import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dyunicafe.R;
 import com.example.dyunicafe.activities.MainActivity;
@@ -137,6 +137,7 @@ public class LoginActivity extends AppCompatActivity {
             textPassword.setError(null);
             textPassword.setErrorEnabled(false);
             return true;
+
         }
 
 
@@ -163,4 +164,16 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    public void gotoForget(View view) {
+        Intent intent = new Intent(getApplicationContext(), ForgetPassword1Activity.class);
+        //add shared animation
+        Pair[] pairs = new Pair[1];//number of elements to be animated
+        pairs[0] = new Pair<View, String>(findViewById(R.id.forgetBtn), "signupTransition");
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(LoginActivity.this, pairs);
+            startActivity(intent, options.toBundle());
+        } else {
+            startActivity(intent);
+        }
+    }
 }
